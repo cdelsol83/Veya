@@ -5,8 +5,8 @@ Updated 2026-10-14.
 
 | Account | Opened | Value | Return | SPY over same period | Worst drop | Days tracked |
 |---|---|---|---|---|---|---|
-| Stocks + crypto | 2026-10-13 | $99,930 | -0.07% | +0.00% | 0.00% | 1 |
-| All markets | 2026-10-13 | $99,923 | -0.08% | +0.00% | 0.00% | 1 |
+| Stocks + crypto | 2026-10-13 | $98,602 | -1.40% | -1.08% | -1.33% | 2 |
+| All markets | 2026-10-13 | $98,544 | -1.46% | -1.08% | -1.38% | 2 |
 
 ## Stocks + crypto: target weights (last rebalance 2026-10)
 
