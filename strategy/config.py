@@ -2,6 +2,7 @@
 
 STOCKS = ["SPY", "QQQ", "IWM", "EFA", "EEM"]  # US large, US tech, US small, developed intl, emerging
 CRYPTO = ["BTC-USD", "ETH-USD"]
+OTHER = []  # extra non-crypto markets (bonds, commodities, ...); see markets.py
 CASH = "SHY"  # 1-3y Treasuries: where money sits when nothing is in an uptrend
 
 START = "2004-01-01"

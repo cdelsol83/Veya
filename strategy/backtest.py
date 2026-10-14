@@ -8,6 +8,8 @@ Each month-end:
 Orders are computed at the month-end close and filled at the NEXT day's close,
 so the backtest never trades on information it wouldn't have had.
 """
+from types import SimpleNamespace
+
 import numpy as np
 import pandas as pd
 
@@ -32,9 +34,20 @@ def cap_weights(w, cap):
     return w
 
 
+def make_cfg(**overrides):
+    """A copy of config.py's settings with some values replaced."""
+    base = {k: v for k, v in vars(C).items() if k.isupper()}
+    base.update(overrides)
+    return SimpleNamespace(**base)
+
+
+def risky_assets(cfg):
+    return cfg.STOCKS + cfg.OTHER + cfg.CRYPTO
+
+
 def target_weights(hist, cfg=C):
     """Target weights (risky assets + cash) from price history up to and including today."""
-    risky = cfg.STOCKS + cfg.CRYPTO
+    risky = risky_assets(cfg)
     window = hist[risky]
     enough = window.notna().sum() > max(cfg.TREND_LOOKBACK, cfg.VOL_LOOKBACK)
     last = window.iloc[-1]
@@ -52,7 +65,7 @@ def target_weights(hist, cfg=C):
     raw = (1 / vol) / (1 / vol).sum()
 
     crypto = [t for t in picks if t in cfg.CRYPTO]
-    stocks = [t for t in picks if t in cfg.STOCKS]
+    stocks = [t for t in picks if t not in cfg.CRYPTO]
     if crypto and raw[crypto].sum() > cfg.CRYPTO_CAP:
         excess = raw[crypto].sum() - cfg.CRYPTO_CAP
         raw[crypto] *= cfg.CRYPTO_CAP / raw[crypto].sum()
@@ -82,7 +95,7 @@ def run(prices, cfg=C, weight_fn=None):
     Returns (equity Series, weights DataFrame recorded at each fill, turnover Series).
     """
     weight_fn = weight_fn or (lambda h: target_weights(h, cfg))
-    assets = cfg.STOCKS + cfg.CRYPTO + [cfg.CASH]
+    assets = risky_assets(cfg) + [cfg.CASH]
     prices = prices[assets]
     rets = prices.pct_change().fillna(0.0)
     cost = pd.Series({a: cfg.COST_BPS["crypto" if a in cfg.CRYPTO else "stock"] / 1e4 for a in assets})
@@ -122,7 +135,7 @@ def buy_and_hold(prices, ticker):
 
 def equal_weight(prices, cfg=C):
     """Same universe, equal weight, rebalanced monthly, no trend filter or vol targeting."""
-    risky = cfg.STOCKS + cfg.CRYPTO
+    risky = risky_assets(cfg)
 
     def fn(hist):
         live = [t for t in risky if hist[t].notna().sum() > 1]

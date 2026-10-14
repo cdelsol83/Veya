@@ -5,7 +5,6 @@
 """
 import argparse
 from pathlib import Path
-from types import SimpleNamespace
 
 import matplotlib
 
@@ -78,8 +77,7 @@ def sensitivity(prices):
     rows = []
     for lb in (100, 150, 200, 250):
         for tv in (0.08, 0.12, 0.16):
-            cfg = SimpleNamespace(**{k: v for k, v in vars(C).items() if k.isupper()})
-            cfg.TREND_LOOKBACK, cfg.TARGET_VOL = lb, tv
+            cfg = bt.make_cfg(TREND_LOOKBACK=lb, TARGET_VOL=tv)
             m = bt.metrics(bt.run(prices, cfg)[0], prices[C.CASH])
             rows.append(f"| {lb} | {tv:.0%} | {m['CAGR']:.1%} | {m['Max drawdown']:.1%} | {m['Sharpe']:.2f} | {m['Worst year']:.1%} |")
     head = "| Trend lookback | Target vol | CAGR | Max drawdown | Sharpe | Worst year |\n|---|---|---|---|---|---|"
@@ -92,7 +90,7 @@ def main():
     args = ap.parse_args()
     OUT.mkdir(exist_ok=True)
 
-    prices = load_prices(C.STOCKS + C.CRYPTO + [C.CASH], C.START, refresh=args.refresh)
+    prices = load_prices(bt.risky_assets(C) + [C.CASH], C.START, refresh=args.refresh)
     strat, weights, turnover = bt.run(prices)
     results = {
         "Strategy": strat,

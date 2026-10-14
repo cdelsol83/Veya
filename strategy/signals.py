@@ -13,10 +13,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--value", type=float, default=10_000, help="account size in dollars")
     args = ap.parse_args()
-    prices = load_prices(C.STOCKS + C.CRYPTO + [C.CASH], C.START, refresh=True)
+    prices = load_prices(bt.risky_assets(C) + [C.CASH], C.START, refresh=True)
     w = bt.target_weights(prices)
     print(f"Signals as of {prices.index[-1]:%Y-%m-%d} close (rebalance once a month):\n")
-    risky = C.STOCKS + C.CRYPTO
+    risky = bt.risky_assets(C)
     sma = prices[risky].iloc[-C.TREND_LOOKBACK:].mean()
     for t in risky + [C.CASH]:
         trend = "" if t == C.CASH else ("uptrend" if prices[t].iloc[-1] > sma[t] else "downtrend -> 0%")

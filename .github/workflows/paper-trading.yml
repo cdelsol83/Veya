@@ -1,0 +1,34 @@
+name: Paper trading update
+
+on:
+  schedule:
+    - cron: "30 21 * * 1-5"  # 21:30 UTC on weekdays, after the US market close
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: paper-trading
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: strategy
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - run: python paper.py update
+      - name: Commit updated ledgers
+        run: |
+          git config user.name "paper-trading-bot"
+          git config user.email "paper-trading-bot@users.noreply.github.com"
+          git add paper
+          git diff --cached --quiet || git commit -m "Paper trading update $(date -u +%F)"
+          git push

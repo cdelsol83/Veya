@@ -25,6 +25,8 @@ All settings are in `config.py`.
 pip install -r requirements.txt
 python run_backtest.py --refresh     # download data, write reports/REPORT.md + charts
 python signals.py --value 10000      # what to hold right now for a $10k account
+python market_study.py               # stress test across 24 markets -> reports/MARKETS.md
+python paper.py status               # paper accounts (see below)
 python -m pytest -q tests            # sanity checks, incl. no look-ahead bias
 ```
 
@@ -51,6 +53,34 @@ See [`reports/REPORT.md`](reports/REPORT.md) for full tables and charts.
   `CRYPTO_CAP`. More return always comes with bigger drawdowns.
 - "Equal weight, no rules" returned far more, almost entirely from holding ~29%
   in crypto during its 2016–2021 boom, with -57% drawdowns. Don't assume that repeats.
+
+## All-markets stress test
+
+[`reports/MARKETS.md`](reports/MARKETS.md) runs the rules against 24 markets (US and
+international stocks, Treasuries, corporate bonds, gold, silver, oil, agriculture, REITs,
+currencies, Bitcoin, Ethereum, Solana), 12 crashes/recoveries/sideways periods, and
+rising/flat/falling stock-market months. Key findings:
+
+- The trend filter **cut the worst drop in all 24 markets**, but improved
+  risk-adjusted return in only 13. In strongly trending markets (Nasdaq, gold) it gives
+  up return; in markets with long slides (oil, commodities, euro, yen) it helps most.
+- An **all-markets** version (adds bonds, gold, commodities, REITs, Solana) was the most
+  consistent: worst drop -18.5%, every 3- and 5-year holding period ended roughly flat
+  or positive, but return fell to 6.6%/yr.
+- Both strategies lose money in falling months, just roughly half to a third as much as SPY,
+  and they lag badly in sharp V-shaped recoveries (2009, 2020) and sideways years (2015).
+
+## Paper trading
+
+`paper.py` runs two simulated $100,000 accounts forward on real daily closes:
+**Stocks + crypto** (the main strategy) and **All markets**. Both were opened on
+2026-10-13. Each rebalances on the first update of every month; trades, daily equity
+and an SPY comparison are saved in `paper/` and summarized in
+[`paper/STATUS.md`](paper/STATUS.md).
+
+`.github/workflows/paper-trading.yml` updates the accounts every weekday after the US close
+and commits the results. It only runs once this workflow is on the repo's default branch;
+you can also start it by hand from the Actions tab or run `python paper.py update` locally.
 
 ## Limitations
 
