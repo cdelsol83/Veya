@@ -1,0 +1,91 @@
+name: Mogul
+
+# Turned off until you set the repository variable MOGUL_ENABLED=true (Settings > Secrets and
+# variables > Actions > Variables) and add the secrets listed in mogul/README.md.
+on:
+  schedule:
+    - cron: "0 7 * * *"     # nightly build: ~2-3am US Eastern
+    - cron: "17 * * * *"    # hourly: read Telegram taps, send approved emails
+    - cron: "5 13 * * *"    # daily money report
+  workflow_dispatch:
+    inputs:
+      task:
+        description: "build | poll | report | deals"
+        default: build
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: mogul
+  cancel-in-progress: false
+
+env:
+  XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
+  MOGUL_MODEL: ${{ vars.MOGUL_MODEL }}
+  TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+  TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+  PLAUSIBLE_API_KEY: ${{ secrets.PLAUSIBLE_API_KEY }}
+  PLAUSIBLE_SITE_ID: ${{ vars.PLAUSIBLE_SITE_ID }}
+  SMTP_HOST: ${{ secrets.SMTP_HOST }}
+  SMTP_PORT: ${{ secrets.SMTP_PORT }}
+  SMTP_USER: ${{ secrets.SMTP_USER }}
+  SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+  SMTP_FROM: ${{ secrets.SMTP_FROM }}
+
+jobs:
+  run:
+    if: vars.MOGUL_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    outputs:
+      task: ${{ steps.pick.outputs.task }}
+    defaults:
+      run:
+        working-directory: mogul
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - id: pick
+        run: |
+          case "${{ github.event.schedule }}" in
+            "0 7 * * *")  t=build ;;
+            "17 * * * *") t=poll ;;
+            "5 13 * * *") t=report ;;
+            *)            t="${{ inputs.task }}" ;;
+          esac
+          # Mondays: weekly report + look for new affiliate programs
+          if [ "$t" = report ] && [ "$(date -u +%u)" = 1 ]; then t="report-week"; fi
+          echo "task=$t" >> "$GITHUB_OUTPUT"
+      - name: Run Mogul
+        run: |
+          case "${{ steps.pick.outputs.task }}" in
+            report-week) python mogul.py report week && python mogul.py deals ;;
+            *)           python mogul.py ${{ steps.pick.outputs.task }} ;;
+          esac
+      - name: Commit state
+        run: |
+          git config user.name "mogul-bot"
+          git config user.email "mogul-bot@users.noreply.github.com"
+          git add data
+          git diff --cached --quiet && exit 0
+          git commit -m "Mogul ${{ steps.pick.outputs.task }} $(date -u +%F)"
+          for i in 1 2 3; do git pull --rebase && git push && break; sleep 5; done
+      - if: steps.pick.outputs.task == 'build'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: mogul/site
+
+  deploy:
+    needs: run
+    if: needs.run.outputs.task == 'build'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
