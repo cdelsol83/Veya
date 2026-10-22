@@ -8,15 +8,16 @@ import llm
 import quality
 import store
 
-TOPICS_PROMPT = """Niche: {niche}.
+TOPICS_PROMPT = """Niche: {niche}. Area: {area}.
 Propose {n} new page titles for a directory website in this niche. Each page must be a
-list/comparison of real, specific entries that people search for (e.g. "Dog-friendly
-campgrounds near Asheville, NC"), answerable with facts from public sources.
+list/comparison of real, specific entries that people search for (e.g. "{example}"),
+answerable with facts from public sources.
 Do not repeat or closely paraphrase these existing titles:
 {existing}
 Return a JSON array of strings."""
 
 RESEARCH_PROMPT = """Niche: {niche}. Page: "{title}".
+{rules}
 Use web search to collect {min_n}-12 real entries for this page. For each entry return:
   "name", "location" (if relevant), "facts": an object of short factual fields that matter
   to someone choosing (prices, fees, rules, limits, hours, features), "vendor" (the brand/
@@ -26,7 +27,8 @@ use "unknown" when a fact isn't stated.
 Return JSON: {{"description": one-sentence meta description, "records": [...]}}"""
 
 WRITE_PROMPT = """Write the body of a directory page titled "{title}" for {site}.
-Audience: people trying to choose quickly. Use ONLY the facts in this JSON; do not add any
+Audience: people trying to choose quickly. Never state or imply anything negative about a
+named business. Use ONLY the facts in this JSON; do not add any
 fact not present in it:
 {records}
 Structure (Markdown): a 2-3 sentence intro answering the searcher's question directly;
@@ -48,7 +50,7 @@ def today():
 def refill_topics(topics, n=10):
     existing = [t["title"] for t in topics]
     new, _ = llm.ask_json(TOPICS_PROMPT.format(
-        niche=config.NICHE, n=n, existing="\n".join(f"- {t}" for t in existing) or "(none)"))
+        niche=config.NICHE, area=config.AREA, example=config.PAGE_EXAMPLE, n=n, existing="\n".join(f"- {t}" for t in existing) or "(none)"))
     seen = {slugify(t) for t in existing}
     for title in new:
         if slugify(title) not in seen:
@@ -59,7 +61,8 @@ def refill_topics(topics, n=10):
 
 def make_page(title, published=None):
     research, citations = llm.ask_json(RESEARCH_PROMPT.format(
-        niche=config.NICHE, title=title, min_n=config.MIN_RECORDS))
+        niche=config.NICHE, title=title, min_n=config.MIN_RECORDS,
+        rules=config.NICHE_RULES.format(area=config.AREA)))
     records = research.get("records", [])
     body, _ = llm.ask(WRITE_PROMPT.format(
         title=title, site=config.SITE_NAME, records=json.dumps(records, indent=1)), tools=())
