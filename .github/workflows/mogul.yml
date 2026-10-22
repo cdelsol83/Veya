@@ -1,7 +1,7 @@
 name: Mogul
 
-# Turned off until you set the repository variable MOGUL_ENABLED=true (Settings > Secrets and
-# variables > Actions > Variables) and add the secrets listed in mogul/README.md.
+# The schedule is off until you set the repository variable MOGUL_ENABLED=true (Settings > Secrets
+# and variables > Actions > Variables). Manual runs (Run workflow) work without it.
 on:
   schedule:
     - cron: "0 7 * * *"     # nightly build: ~2-3am US Eastern
@@ -10,8 +10,8 @@ on:
   workflow_dispatch:
     inputs:
       task:
-        description: "build | poll | report | deals"
-        default: build
+        description: "scout | build | poll | report | deals"
+        default: scout
 
 permissions:
   contents: write
@@ -37,7 +37,7 @@ env:
 
 jobs:
   run:
-    if: vars.MOGUL_ENABLED == 'true'
+    if: vars.MOGUL_ENABLED == 'true' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     outputs:
       task: ${{ steps.pick.outputs.task }}

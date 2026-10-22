@@ -39,9 +39,13 @@ def status():
 def main(argv):
     cmd = argv[1] if len(argv) > 1 else "status"
     if cmd == "scout":
-        for i, c in enumerate(scout.run(), 1):
+        candidates = scout.run()
+        for i, c in enumerate(candidates, 1):
             print(f"{i:>2}. {c['score']:>5}  {c['niche']}")
         print(f"\nDetails: {store.path('scout/candidates.md')}")
+        telegram.send("🔎 Mogul scout: top niches\n\n" + "\n".join(
+            f"{i}. {c['niche']} (score {c['score']})" for i, c in enumerate(candidates[:5], 1))
+            + "\n\nFull details: mogul/data/scout/candidates.md in the repo.")
     elif cmd == "build":
         results = builder.run()
         n = render.build()
