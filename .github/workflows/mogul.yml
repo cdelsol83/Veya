@@ -10,7 +10,9 @@ on:
   workflow_dispatch:
     inputs:
       task:
-        description: "scout | build | poll | report | deals"
+        description: "What to run"
+        type: choice
+        options: [scout, build, poll, report, deals]
         default: scout
 
 permissions:

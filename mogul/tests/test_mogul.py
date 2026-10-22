@@ -1,3 +1,5 @@
+import http.client
+import json
 import sys
 from pathlib import Path
 
@@ -98,3 +100,54 @@ def test_outreach_needs_approval_before_sending(sandbox):
 def test_extract_json_handles_fences_and_prose():
     assert llm.extract_json('Sure!\n```json\n{"a": [1, 2]}\n```') == {"a": [1, 2]}
     assert llm.extract_json('Here: [1, 2] done') == [1, 2]
+
+
+class FakeStream:
+    def __init__(self, lines):
+        self.lines = [l.encode() for l in lines]
+
+    def __enter__(self):
+        return iter(self.lines)
+
+    def __exit__(self, *a):
+        return False
+
+
+def sse(*events):
+    return [f"data: {json.dumps(e)}\n" for e in events] + ["data: [DONE]\n"]
+
+
+def test_streamed_reply_is_assembled(monkeypatch):
+    monkeypatch.setattr(config, "DEMO", False)
+    monkeypatch.setattr(config, "XAI_API_KEY", "k")
+    final = {"output": [{"type": "message", "content": [{"type": "output_text", "text": "hello"}]}],
+             "citations": ["https://a.example"]}
+    lines = sse({"type": "response.output_text.delta", "delta": "hel"},
+                {"type": "response.output_text.delta", "delta": "lo"},
+                {"type": "response.completed", "response": final})
+    monkeypatch.setattr(llm.urllib.request, "urlopen", lambda req, timeout: FakeStream(lines))
+    assert llm.ask("hi") == ("hello", ["https://a.example"])
+
+
+def test_dropped_connection_is_retried(monkeypatch):
+    monkeypatch.setattr(config, "DEMO", False)
+    monkeypatch.setattr(config, "XAI_API_KEY", "k")
+    monkeypatch.setattr(llm.time, "sleep", lambda s: None)
+    calls = []
+
+    def urlopen(req, timeout):
+        calls.append(1)
+        if len(calls) == 1:
+            raise http.client.RemoteDisconnected("Remote end closed connection without response")
+        return FakeStream(sse({"type": "response.output_text.delta", "delta": "ok"}))
+    monkeypatch.setattr(llm.urllib.request, "urlopen", urlopen)
+    assert llm.ask("hi") == ("ok", [])
+    assert len(calls) == 2
+
+
+def test_plain_json_reply_still_works(monkeypatch):
+    monkeypatch.setattr(config, "DEMO", False)
+    monkeypatch.setattr(config, "XAI_API_KEY", "k")
+    body = json.dumps({"output": [{"type": "message", "content": [{"type": "output_text", "text": "x"}]}]})
+    monkeypatch.setattr(llm.urllib.request, "urlopen", lambda req, timeout: FakeStream([body]))
+    assert llm.ask("hi") == ("x", [])
