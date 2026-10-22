@@ -37,7 +37,7 @@ def status():
 
 
 def main(argv):
-    cmd = argv[1] if len(argv) > 1 else "status"
+    cmd = argv[1].strip().lower() if len(argv) > 1 else "status"
     if cmd == "scout":
         candidates = scout.run()
         for i, c in enumerate(candidates, 1):
