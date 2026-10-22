@@ -45,6 +45,9 @@ def find_programs():
 
 
 def draft_outreach():
+    if config.OWNER_NAME == "Your Name" or "Example St" in config.OWNER_POSTAL_ADDRESS:
+        print("Skipping outreach drafts: set OWNER_NAME and OWNER_POSTAL_ADDRESS in config.py first")
+        return []
     pages = store.pages()
     existing = {o["vendor"].lower() for o in store.outreach()}
     drafts = []

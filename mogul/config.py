@@ -3,9 +3,9 @@ import os
 
 # --- The niche (chosen by YOU after reading data/scout/candidates.md) ---
 NICHE = "independently owned, licensed trade contractors (plumbers, electricians, HVAC, roofers)"
-AREA = "Florida"  # placeholder until you pick an area; start in one area: license data is per state, and local depth ranks faster
-SITE_NAME = "LicensedLocal"  # placeholder until you pick a name
-SITE_URL = "https://example.com"  # final public URL, used in sitemap + canonical links
+AREA = "Florida"  # one state to start: license data is per state, and local depth ranks faster
+SITE_NAME = "LicensedLocal"
+SITE_URL = "https://cdelsol83.github.io/Veya"  # GitHub Pages address; change when you add a domain
 SITE_TAGLINE = "Independently owned trade contractors, with every license checked at the state board."
 PAGE_EXAMPLE = "Independently owned plumbers in Tampa, FL (license checked)"
 # Extra research rules sent with every page. These pages name real businesses, so they stay factual.
@@ -20,7 +20,8 @@ company; otherwise leave it out. Never state or imply that a business is unlicen
 private-equity owned, or bad: this page lists businesses that passed checks, it does not accuse anyone.
 Do not invent reviews, ratings or prices."""
 OWNER_NAME = "Your Name"
-# CAN-SPAM requires a real postal address in commercial email
+# CAN-SPAM requires a real postal address in commercial email. Outreach drafts are skipped
+# until both of these are filled in.
 OWNER_POSTAL_ADDRESS = "123 Example St, City, ST 00000"
 
 # --- Scout ---
@@ -50,7 +51,7 @@ STALE_AFTER_DAYS = 120      # pages older than this get refreshed before new one
 # --- Affiliate links: vendor/program name (lowercase) -> your tracking URL ---
 # Filled in by you once a program approves you. Pages link vendors found here.
 AFFILIATE_LINKS = {
-    # "hipcamp": "https://www.hipcamp.com/?ref=YOURCODE",
+    # "choice home warranty": "https://example.com/?ref=YOURCODE",
 }
 
 # --- Model / APIs (secrets come from environment variables, never this file) ---

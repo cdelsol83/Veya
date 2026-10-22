@@ -107,7 +107,7 @@ def records_table(records):
             f'<tbody>{"".join(rows)}</tbody></table></div>')
 
 
-def layout(title, description, canonical, body, extra_head=""):
+def layout(title, description, canonical, body, extra_head="", home="./"):
     e = html.escape
     plausible = ""
     if config.PLAUSIBLE_SITE_ID:
@@ -117,7 +117,7 @@ def layout(title, description, canonical, body, extra_head=""):
 <meta name=viewport content="width=device-width,initial-scale=1">
 <title>{e(title)}</title><meta name=description content="{e(description)}">
 <link rel=canonical href="{e(canonical)}"><style>{CSS}</style>{plausible}{extra_head}</head>
-<body><header><a href="/">{e(config.SITE_NAME)}</a></header><main>{body}</main>
+<body><header><a href="{home}">{e(config.SITE_NAME)}</a></header><main>{body}</main>
 <footer>{e(config.SITE_TAGLINE)} Facts are checked against the linked sources; tell us if
 something changed.</footer></body></html>"""
 
@@ -133,13 +133,13 @@ def render_page(p):
             f"<p class=disclosure>{quality.DISCLOSURE}. It never changes what we list or how.</p>"
             f"{records_table(p['records'])}{markdown(p['body_md'])}")
     head = f'<script type="application/ld+json">{json.dumps(ld)}</script>'
-    return layout(f"{p['title']} | {config.SITE_NAME}", p["description"], url, body, head)
+    return layout(f"{p['title']} | {config.SITE_NAME}", p["description"], url, body, head, home="../")
 
 
 def render_index(pages):
     e = html.escape
     items = "".join(
-        f'<li><a href="/{e(p["slug"])}/">{e(p["title"])}</a><br>'
+        f'<li><a href="{e(p["slug"])}/">{e(p["title"])}</a><br>'
         f'<span class=meta>{e(p["description"])}</span></li>'
         for p in reversed(pages))
     body = f"<h1>{e(config.SITE_NAME)}</h1><p>{e(config.SITE_TAGLINE)}</p><ul class=pages>{items}</ul>"
