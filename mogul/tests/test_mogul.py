@@ -151,3 +151,10 @@ def test_plain_json_reply_still_works(monkeypatch):
     body = json.dumps({"output": [{"type": "message", "content": [{"type": "output_text", "text": "x"}]}]})
     monkeypatch.setattr(llm.urllib.request, "urlopen", lambda req, timeout: FakeStream([body]))
     assert llm.ask("hi") == ("x", [])
+
+
+def test_gate_blocks_ranking_language():
+    page = demo_page("Dog-friendly campgrounds near Bend, OR")
+    assert quality.check(page, []) == []
+    ranked = {**page, "body_md": page["body_md"] + "\n\n- **Best overall:** Pine Camp."}
+    assert any("neutral" in f for f in quality.check(ranked, []))
