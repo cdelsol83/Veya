@@ -79,12 +79,10 @@ def body(title, records):
         "", "## How we picked", "",
         f"Every campground near {city} on this page links to the page where we verified its pet "
         "policy. Rules change, so check that page before you book, and tell us if something is out of date.",
-        "", "## Quick picks", "",
-        f"- **Best overall:** {records[0]['name']} ({records[0]['location']}), {records[0]['facts']['leash_rule'].lower()}, "
-        f"pet fee {records[0]['facts']['pet_fee'].lower()}.",
-        f"- **Best budget:** {cheapest['name']}, from {cheapest['facts']['nightly_from']}/night.",
-        f"- **Best for multi-dog families:** {(multi or records)[0]['name']}, allows "
-        f"{(multi or records)[0]['facts']['max_dogs'].lower()} dogs.",
+        "", "## At a glance", "",
+        f"- **Lowest nightly rate listed:** {cheapest['facts']['nightly_from']} ({cheapest['name']}).",
+        f"- **No pet fee:** {', '.join(r['name'] for r in free) or 'none of the campgrounds checked'}.",
+        f"- **Allow 3 or more dogs:** {', '.join(r['name'] for r in multi) or 'none of the campgrounds checked'}.",
         "", "## Things to know before you go", "",
     ]
     for r in records:

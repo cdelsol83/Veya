@@ -3,6 +3,8 @@ import re
 
 import config
 
+# Pages name real businesses, so they compare facts and never pick winners.
+RANKING = r"\b(best (overall|budget|value|for|pick)|top (pick|choice|rated)|our (pick|favorite|top)|we recommend|editor'?s choice|runner[- ]up)\b"
 DISCLOSURE = "We may earn a commission if you buy through links on this page"
 
 
@@ -41,4 +43,6 @@ def check(page, existing):
             fails.append(f"{s:.0%} similar to existing page '{other['slug']}'")
     if re.search(r"\b(as an ai|i cannot|i'm unable|lorem ipsum)\b", body, re.I):
         fails.append("contains model boilerplate")
+    if re.search(RANKING, body, re.I):
+        fails.append("ranks or recommends named businesses (pages must stay neutral)")
     return fails

@@ -32,8 +32,9 @@ named business. Use ONLY the facts in this JSON; do not add any
 fact not present in it:
 {records}
 Structure (Markdown): a 2-3 sentence intro answering the searcher's question directly;
-"## How we picked" (what was checked and that facts link to sources); "## Quick picks"
-(3 bullets: best overall / best budget / best for a specific need, naming entries);
+"## How we picked" (what was checked and that facts link to sources); "## At a glance"
+(3-4 neutral bullets comparing facts across entries, e.g. which areas each serves or license
+dates; never rank, rate or recommend entries, and never use "best", "top" or "our pick");
 "## Things to know before you go" (practical tips grounded in the facts);
 "## FAQ" (3 questions as ### headings with short answers).
 Do not include a table of the entries; the site renders that from the data. 400-700 words."""
