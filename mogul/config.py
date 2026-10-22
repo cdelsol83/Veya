@@ -41,14 +41,14 @@ AFFILIATE_LINKS = {
 }
 
 # --- Model / APIs (secrets come from environment variables, never this file) ---
-XAI_MODEL = os.environ.get("MOGUL_MODEL", "grok-4.7")
+XAI_MODEL = os.environ.get("MOGUL_MODEL") or "grok-4.7"
 XAI_API_KEY = os.environ.get("XAI_API_KEY", "")
 TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN", "")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "")
 PLAUSIBLE_API_KEY = os.environ.get("PLAUSIBLE_API_KEY", "")
 PLAUSIBLE_SITE_ID = os.environ.get("PLAUSIBLE_SITE_ID", "")
 SMTP_HOST = os.environ.get("SMTP_HOST", "")
-SMTP_PORT = int(os.environ.get("SMTP_PORT", "587"))
+SMTP_PORT = int(os.environ.get("SMTP_PORT") or "587")
 SMTP_USER = os.environ.get("SMTP_USER", "")
 SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD", "")
 SMTP_FROM = os.environ.get("SMTP_FROM", "")
