@@ -113,10 +113,13 @@ def layout(title, description, canonical, body, extra_head="", home="./"):
     if config.PLAUSIBLE_SITE_ID:
         plausible = (f'<script defer data-domain="{e(config.PLAUSIBLE_SITE_ID)}" '
                      'src="https://plausible.io/js/script.outbound-links.js"></script>')
+    verify = ""
+    if config.GOOGLE_SITE_VERIFICATION:
+        verify = f'<meta name="google-site-verification" content="{e(config.GOOGLE_SITE_VERIFICATION)}">'
     return f"""<!doctype html><html lang=en><head><meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
 <title>{e(title)}</title><meta name=description content="{e(description)}">
-<link rel=canonical href="{e(canonical)}"><style>{CSS}</style>{plausible}{extra_head}</head>
+<link rel=canonical href="{e(canonical)}">{verify}<style>{CSS}</style>{plausible}{extra_head}</head>
 <body><header><a href="{home}">{e(config.SITE_NAME)}</a></header><main>{body}</main>
 <footer>{e(config.SITE_TAGLINE)} Facts are checked against the linked sources; tell us if
 something changed.</footer></body></html>"""

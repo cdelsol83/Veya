@@ -7,6 +7,8 @@ AREA = "Florida"  # one state to start: license data is per state, and local dep
 SITE_NAME = "LicensedLocal"
 SITE_URL = "https://cdelsol83.github.io/Veya"  # GitHub Pages address; change when you add a domain
 SITE_TAGLINE = "Independently owned trade contractors, with every license checked at the state board."
+# Google Search Console "HTML tag" verification (the content="..." value; public, not a secret)
+GOOGLE_SITE_VERIFICATION = "NoE7IsyP4EQpJGrh3_7dX35ElP2nEqGlDqctjEqnTb4"
 PAGE_EXAMPLE = "Independently owned plumbers in Tampa, FL (license checked)"
 # Extra research rules sent with every page. These pages name real businesses, so they stay factual.
 NICHE_RULES = """Each entry is a real business in {area}. Required facts: "trade", "license_number" and
