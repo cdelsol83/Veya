@@ -1,0 +1,319 @@
+[
+  {
+    "niche": "Independently owned licensed trades",
+    "example_complaints": [
+      "\"finding reliable, trustworthy, competent people is always an absolute nightmare\" — https://www.reddit.com/r/HomeMaintenance/comments/1x7qmb2/why_is_it_so_difficult_to_find_reliable/",
+      "\"they operate under fake names, with fake online websites, fake reviews, and questionable licensing and expertise.\" — https://www.reddit.com/r/HomeMaintenance/comments/1x7qmb2/why_is_it_so_difficult_to_find_reliable/",
+      "\"I have found it hard to find the mom and pop places though and the only way is to hear about them by word of mouth\" — https://www.reddit.com/r/Contractor/comments/1x5banp/private_equity_is_destroying_the_bluecollar_trades/"
+    ],
+    "page_ideas": [
+      "Independently owned plumbers near you, license checked",
+      "HVAC companies not owned by private equity",
+      "How to read a state contractor license",
+      "Small-job contractors who still take one-opening work",
+      "Quote-range reality check for common repairs"
+    ],
+    "affiliate_angles": [
+      "Angi and HomeAdvisor affiliate or lead programs",
+      "Home-warranty affiliates such as Choice Home Warranty and American Home Shield via Impact",
+      "Home Depot, Lowe's, and tool-brand affiliate programs for DIY alternatives"
+    ],
+    "data_sources": [
+      "State contractor licensing board lookups",
+      "Secretary of state business-entity ownership filings",
+      "Local permit records",
+      "BBB and public complaint dockets"
+    ],
+    "complaint_volume": 7,
+    "search_demand": 9,
+    "monetization": 8,
+    "weak_competition": 4,
+    "data_available": 7,
+    "score": 7.3
+  },
+  {
+    "niche": "Cross-marketplace resale comps",
+    "example_complaints": [
+      "\"I got tired of checking Vinted, Grailed, Depop and eBay one by one, so I built a site that searches 24 resale sites at once\" — https://www.reddit.com/r/reselling/comments/1x48vtd/i_got_tired_of_checking_vinted_grailed_depop_and/",
+      "\"cheapest first needs to distinguish a known total from a price with unknown shipping.\" — https://www.reddit.com/r/reselling/comments/1x48vtd/i_got_tired_of_checking_vinted_grailed_depop_and/",
+      "\"A delivery-country selector would also make comparisons more useful across those regional marketplaces.\" — https://www.reddit.com/r/reselling/comments/1x48vtd/i_got_tired_of_checking_vinted_grailed_depop_and/"
+    ],
+    "page_ideas": [
+      "Same jacket, all resale sites, price plus shipping",
+      "Sold comps vs asking prices for one SKU",
+      "Regional marketplaces that actually ship to your country",
+      "Fee calculator: eBay vs Depop vs Grailed vs Vinted",
+      "Authentication risk notes by brand and marketplace"
+    ],
+    "affiliate_angles": [
+      "eBay Partner Network",
+      "ThredUp and The RealReal affiliate programs",
+      "Amazon Associates for new-vs-used price gaps",
+      "Fashion reseller tool subscriptions with referral codes"
+    ],
+    "data_sources": [
+      "Public marketplace search pages",
+      "eBay completed-listings pages",
+      "Brand size charts and style codes",
+      "Posted seller fee schedules"
+    ],
+    "complaint_volume": 4,
+    "search_demand": 7,
+    "monetization": 7,
+    "weak_competition": 5,
+    "data_available": 6,
+    "score": 5.85
+  },
+  {
+    "niche": "Down-ballot voter lookup",
+    "example_complaints": [
+      "\"is there a site that gives you info on the judges on my ballot?\" — https://x.com/ellenkmcd/status/2112872300085198964",
+      "\"is there a website that is non bias and gives a compare & contrast of local, state, officials running for office.\" — https://x.com/Real_RRJ12/status/2112970332600418725",
+      "\"Where is a good explanation of this Amendment! The verbiage is always so confusing! Also is there a site that you trust to give us correct information.\" — https://x.com/cpmjcms/status/2112587467576488102"
+    ],
+    "page_ideas": [
+      "Judges on your ballot: retention bios by address",
+      "Plain-English guide to this year's statewide ballot measures",
+      "Local candidate comparison: office, party, and stated positions",
+      "What a yes or no vote actually changes",
+      "Sample ballot checklist with sources for every race"
+    ],
+    "affiliate_angles": [
+      "Few direct consumer affiliate programs; realistic money is sponsored local explainers, newsletter ads, and referral links to paid news subscriptions where a publisher program exists",
+      "Indirect: voter-guide print affiliates are weak; do not sell candidate placements"
+    ],
+    "data_sources": [
+      "State secretary of state sample-ballot and voter-guide portals",
+      "State judicial branch retention pages and published opinions",
+      "Ballotpedia and county election board filings",
+      "Official constitutional amendment text"
+    ],
+    "complaint_volume": 6,
+    "search_demand": 8,
+    "monetization": 3,
+    "weak_competition": 4,
+    "data_available": 8,
+    "score": 5.65
+  },
+  {
+    "niche": "Full catalogs and hard-to-find titles",
+    "example_complaints": [
+      "\"niche ass british movies from the 70s be like haha lol catch me on youtube or VK if not there im NOWHERE. like why is it so hard to find I just wanna watch Sinful Davey\" — https://x.com/ringofromphilly/status/2113313761519898852",
+      "\"Why is it so hard to browse what is available? You can read through every list, every page presented and still not see all available content. ... Why is there no A-Z list?\" — https://x.com/TheFollow42/status/2112312833816068438"
+    ],
+    "page_ideas": [
+      "A-Z of everything on this streaming service",
+      "Where this obscure film is legally available",
+      "Titles on the service that search will not surface",
+      "Physical media still in print for this film",
+      "Leaving-soon list with replacement sources"
+    ],
+    "affiliate_angles": [
+      "Streaming signup affiliates on Impact, including Paramount+ and similar offers",
+      "Amazon Associates and eBay Partner Network for DVDs and Blu-rays",
+      "JustWatch-style outbound links where a partner program exists"
+    ],
+    "data_sources": [
+      "Service help pages and public title lists",
+      "TMDB, Wikidata, and IMDb public records",
+      "Library catalogs via WorldCat",
+      "Studio and distributor press pages"
+    ],
+    "complaint_volume": 4,
+    "search_demand": 7,
+    "monetization": 6,
+    "weak_competition": 3,
+    "data_available": 7,
+    "score": 5.4
+  },
+  {
+    "niche": "County recorded home sales",
+    "example_complaints": [
+      "\"is there a site where i can lookup sales in New Mexico?\" — https://x.com/Terpolska1/status/2112658581594239286",
+      "\"Is there a site to compare or do you ring them\" — https://x.com/jrae1990/status/2111059513470071242"
+    ],
+    "page_ideas": [
+      "Recent recorded sales in this county",
+      "Sale price, date, and document number",
+      "How to read a deed index",
+      "Counties where sales are free online vs clerk-only",
+      "Nearby comps from public records, not listing estimates"
+    ],
+    "affiliate_angles": [
+      "LendingTree, Bankrate, and mortgage-lender affiliate programs",
+      "Home-warranty affiliates after a purchase",
+      "Title and insurance referral programs where permitted"
+    ],
+    "data_sources": [
+      "County clerk and assessor portals",
+      "State property-tax sites",
+      "Recorded deed indexes",
+      "Public GIS parcel maps"
+    ],
+    "complaint_volume": 2,
+    "search_demand": 7,
+    "monetization": 8,
+    "weak_competition": 3,
+    "data_available": 7,
+    "score": 5.4
+  },
+  {
+    "niche": "Robotics employers, jobs, and events",
+    "example_complaints": [
+      "\"I go to a lot of robotics events and meetups and often hear about good ones after they've happened.\" — https://www.reddit.com/r/robotics/comments/1x6ktxa/i_spent_the_summer_mapping_500_robotics_companies/",
+      "\"I've also spent the last year looking for jobs in robotics and kept missing interesting roles.\" — https://www.reddit.com/r/robotics/comments/1x6ktxa/i_spent_the_summer_mapping_500_robotics_companies/",
+      "\"It feels like everything is scattered across so many different places.\" — https://www.reddit.com/r/robotics/comments/1x6ktxa/i_spent_the_summer_mapping_500_robotics_companies/"
+    ],
+    "page_ideas": [
+      "Robotics companies by city and specialty",
+      "Open robotics roles that are not only big-tech",
+      "Meetups and conferences in the next 90 days",
+      "University spinouts and small teams",
+      "Who is hiring field robotics vs simulation"
+    ],
+    "affiliate_angles": [
+      "Digi-Key and Mouser affiliate programs for components",
+      "Conference ticket affiliates via Eventbrite or organizer partner programs",
+      "Job-board sponsored listings and resume-tool referrals"
+    ],
+    "data_sources": [
+      "Company career pages and press releases",
+      "Public event calendars and Meetup listings",
+      "University tech-transfer news",
+      "Crunchbase free profiles and SEC filings for larger firms"
+    ],
+    "complaint_volume": 3,
+    "search_demand": 5,
+    "monetization": 6,
+    "weak_competition": 6,
+    "data_available": 7,
+    "score": 5.1
+  },
+  {
+    "niche": "Language-matched local services",
+    "example_complaints": [
+      "\"the majority of my neighbors are short term renters with absentee landlords or foreign transplants that either don't speak English or otherwise avoid interaction with anybody.\" — https://www.reddit.com/r/HomeMaintenance/comments/1x7qmb2/why_is_it_so_difficult_to_find_reliable/",
+      "\"A tester tried Richmond + Greek and said they lost track of the language match when switching from the list to the map.\" — https://www.reddit.com/r/directorymakers/new/"
+    ],
+    "page_ideas": [
+      "Plumbers who speak Spanish, Amharic, or Greek",
+      "Daycares by language spoken at pickup",
+      "Community clinics with interpreter on site",
+      "Ethnic grocery and remittance shops by neighborhood",
+      "How language was verified on each listing"
+    ],
+    "affiliate_angles": [
+      "OpenTable and local restaurant reservation affiliates where programs exist",
+      "Translation-app and international-calling referral programs",
+      "Grocery delivery affiliates such as Instacart or Amazon Fresh for specialty shops"
+    ],
+    "data_sources": [
+      "State business filings and DBA records",
+      "Community association and consulate business lists",
+      "Public health department clinic directories",
+      "Provider websites and posted language policies"
+    ],
+    "complaint_volume": 3,
+    "search_demand": 6,
+    "monetization": 5,
+    "weak_competition": 7,
+    "data_available": 4,
+    "score": 4.95
+  },
+  {
+    "niche": "Listening stats and obscure music sources",
+    "example_complaints": [
+      "\"is there a site that lets you sort your last fm data? like by genre or more so by date or things like that\" — https://x.com/celinedionysus_/status/2111632884171677769",
+      "\"Blogs, label pages, radio archives, Bandcamp, liner notes, discogs, forums. The resources are there, but do you have hours to scour, read, and search?\" — https://x.com/addisonhoover/status/2112568183391654132"
+    ],
+    "page_ideas": [
+      "Your scrobbles by genre and by year",
+      "Where to hear this out-of-print album legally",
+      "Label directory with Bandcamp and Discogs links",
+      "Radio archives that still host this show",
+      "Similar artists that are not on major streaming"
+    ],
+    "affiliate_angles": [
+      "Bandcamp affiliate program",
+      "Amazon Associates for CDs and vinyl",
+      "Turntable Lab and other vinyl-shop affiliate programs",
+      "Discogs marketplace outbound links"
+    ],
+    "data_sources": [
+      "Last.fm API",
+      "MusicBrainz and Discogs public data",
+      "Bandcamp artist and label pages",
+      "Public radio archive pages"
+    ],
+    "complaint_volume": 3,
+    "search_demand": 5,
+    "monetization": 5,
+    "weak_competition": 5,
+    "data_available": 8,
+    "score": 4.8
+  },
+  {
+    "niche": "Non-music rating charts",
+    "example_complaints": [
+      "\"I wish there was a RYM for everything\" — https://www.reddit.com/r/rateyourmusic/comments/1x6459t/i_wish_there_was_a_rym_for_everything/",
+      "\"imagine there was a RateYourDishes and I could go on its charts to discover some obscure delicious Georgian stew\" — https://www.reddit.com/r/rateyourmusic/comments/1x6459t/i_wish_there_was_a_rym_for_everything/",
+      "\"what about I dunno, hikes? Architecture? Perfumes? Music festivals?\" — https://www.reddit.com/r/rateyourmusic/comments/1x6459t/i_wish_there_was_a_rym_for_everything/"
+    ],
+    "page_ideas": [
+      "Highest-rated home dishes by cuisine, not restaurants",
+      "Music festivals compared on lineup, camping, and price",
+      "Notable buildings by city with visitor access",
+      "Day hikes ranked by distance, gain, and season",
+      "Charts that are not dominated by the same ten classics"
+    ],
+    "affiliate_angles": [
+      "Amazon Associates for cookbooks and outdoor gear",
+      "REI and Backcountry affiliate programs",
+      "Eventbrite or ticket-seller partner programs for festivals",
+      "AllTrails and perfume sites already exist, so affiliate upside is mainly gear and tickets"
+    ],
+    "data_sources": [
+      "USDA and public recipe sites for dish facts",
+      "National park and trailhead public data",
+      "Festival official sites",
+      "Municipal landmark and architecture registers"
+    ],
+    "complaint_volume": 2,
+    "search_demand": 6,
+    "monetization": 5,
+    "weak_competition": 6,
+    "data_available": 6,
+    "score": 4.75
+  },
+  {
+    "niche": "Niche game reference lookups",
+    "example_complaints": [
+      "\"is there a site that still accurately tracks chem style prices with graphs so you can compare or do you just check them regularly\" — https://x.com/Argon1188/status/2111102439525105738",
+      "\"is there a website or list that shows all the events in order or like, the whole timeline\" — https://x.com/despaizu/status/2110717259693900185"
+    ],
+    "page_ideas": [
+      "Chem style price history with a real graph",
+      "Event timeline in release order",
+      "Which past event stories are still readable",
+      "Item price vs 30-day average",
+      "Beginner path through the event archive"
+    ],
+    "affiliate_angles": [
+      "Game-key and top-up affiliates where allowed by the publisher",
+      "Amazon Associates for guides and merch",
+      "Display ads on high-intent price pages; avoid unofficial account or currency marketplaces"
+    ],
+    "data_sources": [
+      "In-game market boards observed publicly",
+      "Official event news posts",
+      "Fan wikis with dated patch notes",
+      "Existing tracker sites used only as cross-checks"
+    ],
+    "complaint_volume": 3,
+    "search_demand": 5,
+    "monetization": 4,
+    "weak_competition": 4,
+    "data_available": 6,
+    "score": 4.2
+  }
+]
