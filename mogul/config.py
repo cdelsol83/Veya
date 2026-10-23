@@ -5,7 +5,7 @@ import os
 NICHE = "independently owned, licensed trade contractors (plumbers, electricians, HVAC, roofers)"
 AREA = "Florida"  # one state to start: license data is per state, and local depth ranks faster
 SITE_NAME = "LicensedLocal"
-SITE_URL = "https://cdelsol83.github.io/Veya"  # GitHub Pages address; change when you add a domain
+SITE_URL = "https://licensedlocal.org"  # custom domain (set in Settings > Pages > Custom domain)
 SITE_TAGLINE = "Independently owned trade contractors, with every license checked at the state board."
 # Google Search Console "HTML tag" verification (the content="..." value; public, not a secret)
 GOOGLE_SITE_VERIFICATION = "NoE7IsyP4EQpJGrh3_7dX35ElP2nEqGlDqctjEqnTb4"
