@@ -2,13 +2,28 @@
 import os
 
 # --- The niche (chosen by YOU after reading data/scout/candidates.md) ---
-NICHE = "independently owned, licensed trade contractors (plumbers, electricians, HVAC, roofers)"
+TRADES = ["plumbers", "electricians", "HVAC contractors", "roofers",
+          "pool & spa contractors", "general contractors"]
+NICHE = f"independently owned, licensed trade contractors ({', '.join(TRADES)})"
 AREA = "Florida"  # one state to start: license data is per state, and local depth ranks faster
 SITE_NAME = "LicensedLocal"
 SITE_URL = "https://licensedlocal.org"  # custom domain (set in Settings > Pages > Custom domain)
 SITE_TAGLINE = "Independently owned trade contractors, with every license checked at the state board."
 # Google Search Console "HTML tag" verification (the content="..." value; public, not a secret)
 GOOGLE_SITE_VERIFICATION = "NoE7IsyP4EQpJGrh3_7dX35ElP2nEqGlDqctjEqnTb4"
+# Cities new pages are spread across (one trade + one city per page)
+CITIES = ["Jacksonville", "Miami", "Orlando", "Tampa", "Fort Lauderdale", "St. Petersburg",
+          "West Palm Beach", "Cape Coral", "Naples", "Tallahassee", "Gainesville",
+          "Sarasota", "Fort Myers"]
+# Written next, ahead of the auto-generated queue (skipped if a page with that title exists)
+PRIORITY_TOPICS = [
+    "Independently owned pool & spa contractors in Sarasota, FL (license checked)",
+    "Independently owned general contractors in Fort Myers, FL (license checked)",
+    "Independently owned plumbers in Sarasota, FL (license checked)",
+    "Independently owned pool & spa contractors in Fort Myers, FL (license checked)",
+    "Independently owned general contractors in Sarasota, FL (license checked)",
+    "Independently owned HVAC contractors in Fort Myers, FL (license checked)",
+]
 PAGE_EXAMPLE = "Independently owned plumbers in Tampa, FL (license checked)"
 # Extra research rules sent with every page. These pages name real businesses, so they stay factual.
 NICHE_RULES = """Each entry is a real business in {area}. Required facts: "trade", "license_number" and
@@ -20,7 +35,10 @@ Only list businesses whose license status is active. Only call a business "indep
 when its own site or its state business filing shows a named individual owner and no parent
 company; otherwise leave it out. Never state or imply that a business is unlicensed, fraudulent,
 private-equity owned, or bad: this page lists businesses that passed checks, it does not accuse anyone.
-Do not invent reviews, ratings or prices."""
+Do not invent reviews, ratings or prices.
+License types by trade: pool & spa = Certified or Registered Pool/Spa Contractor (CPC/RP);
+general contractors = Certified or Registered General, Building or Residential Contractor
+(CGC/CBC/CRC/RG/RB/RR); give the exact type in "license_type"."""
 OWNER_NAME = "Your Name"
 # CAN-SPAM requires a real postal address in commercial email. Outreach drafts are skipped
 # until both of these are filled in.

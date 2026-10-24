@@ -158,3 +158,11 @@ def test_gate_blocks_ranking_language():
     assert quality.check(page, []) == []
     ranked = {**page, "body_md": page["body_md"] + "\n\n- **Best overall:** Pine Camp."}
     assert any("neutral" in f for f in quality.check(ranked, []))
+
+
+def test_priority_topics_go_first_and_never_repeat(monkeypatch):
+    monkeypatch.setattr(config, "PRIORITY_TOPICS", ["Pool pros in Sarasota, FL", "Plumbers in Naples, FL"])
+    topics = [{"title": "Plumbers in Naples, FL", "status": "published"}, {"title": "X", "status": "queued"}]
+    out = builder.add_priority_topics(topics)
+    assert [t["title"] for t in out] == ["Pool pros in Sarasota, FL", "Plumbers in Naples, FL", "X"]
+    assert builder.add_priority_topics(out) == out

@@ -9,7 +9,9 @@ import quality
 import store
 
 TOPICS_PROMPT = """Niche: {niche}. Area: {area}.
-Propose {n} new page titles for a directory website in this niche. Each page must be a
+Propose {n} new page titles for a directory website in this niche, one trade in one city per
+page. Trades: {trades}. Cities: {cities}. Spread pages across trades and cities, favouring
+combinations not yet covered. Each page must be a
 list/comparison of real, specific entries that people search for (e.g. "{example}"),
 answerable with facts from public sources.
 Do not repeat or closely paraphrase these existing titles:
@@ -48,10 +50,18 @@ def today():
     return dt.date.today().isoformat()
 
 
+def add_priority_topics(topics):
+    """Put config.PRIORITY_TOPICS first in the queue, skipping titles already known."""
+    seen = {slugify(t["title"]) for t in topics}
+    new = [{"title": t, "status": "queued"} for t in config.PRIORITY_TOPICS if slugify(t) not in seen]
+    return new + topics
+
+
 def refill_topics(topics, n=10):
     existing = [t["title"] for t in topics]
     new, _ = llm.ask_json(TOPICS_PROMPT.format(
-        niche=config.NICHE, area=config.AREA, example=config.PAGE_EXAMPLE, n=n, existing="\n".join(f"- {t}" for t in existing) or "(none)"))
+        niche=config.NICHE, area=config.AREA, example=config.PAGE_EXAMPLE, n=n,
+        trades=", ".join(config.TRADES), cities=", ".join(config.CITIES), existing="\n".join(f"- {t}" for t in existing) or "(none)"))
     seen = {slugify(t) for t in existing}
     for title in new:
         if slugify(title) not in seen:
@@ -93,7 +103,7 @@ def run_once():
         page = make_page(old["title"], published=old["published"])
         action = "refreshed"
     else:
-        topics = store.load("topics.json", [])
+        topics = add_priority_topics(store.load("topics.json", []))
         if sum(t["status"] == "queued" for t in topics) < 3:
             topics = refill_topics(topics)
         topic = next((t for t in topics if t["status"] == "queued"), None)
