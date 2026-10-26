@@ -59,29 +59,44 @@ Return a JSON array of {{"name": exactly as given, "website": URL or "", "phone"
 Use "" when you cannot find it on the business's own site or license record. Never guess."""
 
 
+def name_key(name):
+    """Loose business-name key: case, punctuation and LLC/Inc/Co suffixes don't matter."""
+    words = re.findall(r"[a-z0-9]+", str(name).lower().replace("&", " and "))
+    while words and words[-1] in ("llc", "inc", "co", "corp", "corporation", "company", "ltd", "pa"):
+        words.pop()
+    return " ".join(words)
+
+
 def add_contacts(page):
-    """Fill in website/phone for records that predate those fields. Returns how many were checked."""
-    missing = [r for r in page["records"] if "website" not in r or "phone" not in r]
+    """Fill in website/phone for records not yet checked. Returns how many got an answer."""
+    missing = [r for r in page["records"] if not r.get("contacts_checked")]
     if not missing:
         return 0
     listing = "\n".join(f"- {r['name']} ({r.get('location', '')}), license "
                         f"{r.get('facts', {}).get('license_number', 'unknown')}" for r in missing)
     found, _ = llm.ask_json(CONTACTS_PROMPT.format(area=config.AREA, businesses=listing))
-    by_name = {f.get("name", "").strip().lower(): f for f in found if isinstance(f, dict)}
+    by_name = {name_key(f.get("name", "")): f for f in found if isinstance(f, dict)}
+    answered = 0
     for r in missing:
-        f = by_name.get(r["name"].strip().lower(), {})
-        r["website"] = f.get("website") or ""
-        r["phone"] = f.get("phone") or r.get("facts", {}).get("phone", "")
+        f = by_name.get(name_key(r["name"]))
+        if f is None:  # not in the reply: try again next time, give up after 3 tries
+            r["contacts_tries"] = r.get("contacts_tries", 0) + 1
+            if r["contacts_tries"] >= 3:
+                r["contacts_checked"] = today()
+            continue
+        r["website"] = r.get("website") or f.get("website") or ""
+        r["phone"] = r.get("phone") or f.get("phone") or r.get("facts", {}).get("phone", "")
+        r["contacts_checked"] = today()
+        answered += 1
     store.save(f"pages/{page['slug']}.json", page)
-    return len(missing)
+    return answered
 
 
 def add_contacts_next():
-    """Backfill contacts on the oldest page that still lacks them (one per night)."""
+    """Backfill contacts on the oldest page that still has unchecked businesses (one per night)."""
     for page in store.pages():
-        n = add_contacts(page)
-        if n:
-            return {"action": "contacts", "title": page["title"], "records": n}
+        if any(not r.get("contacts_checked") for r in page["records"]):
+            return {"action": "contacts", "title": page["title"], "records": add_contacts(page)}
     return None
 
 
@@ -110,6 +125,8 @@ def make_page(title, published=None):
         niche=config.NICHE, title=title, min_n=config.MIN_RECORDS,
         rules=config.NICHE_RULES.format(area=config.AREA)))
     records = research.get("records", [])
+    for r in records:  # research already asked for website/phone
+        r["contacts_checked"] = today()
     body, _ = llm.ask(WRITE_PROMPT.format(
         title=title, site=config.SITE_NAME, records=json.dumps(records, indent=1)), tools=())
     return {
