@@ -22,12 +22,25 @@ def similarity(a, b):
     return len(sa & sb) / len(sa | sb) if sa and sb else 0.0
 
 
+def license_verified(record):
+    """Active status AND sourced from the state board. Always true when the check is disabled."""
+    if not config.LICENSE_SOURCE_DOMAIN:
+        return True
+    status = str(record.get("facts", {}).get("license_status", "")).lower()
+    host = re.sub(r"^https?://(www\.)?", "", str(record.get("source", "")).lower()).split("/")[0]
+    active = re.search(r"\bactive\b", status) and not re.search(r"\b(inactive|null|void|revoked|suspended|delinquent)\b", status)
+    return bool(active) and (host == config.LICENSE_SOURCE_DOMAIN or host.endswith("." + config.LICENSE_SOURCE_DOMAIN))
+
+
 def check(page, existing):
     """Return a list of failure reasons (empty list = publish)."""
     fails = []
     records = page.get("records", [])
     if len(records) < config.MIN_RECORDS:
         fails.append(f"only {len(records)} records (< {config.MIN_RECORDS})")
+    unverified = [r["name"] for r in records if not license_verified(r)]
+    if unverified:
+        fails.append(f"license not confirmed at the state board: {', '.join(unverified)}")
     sourced = [r for r in records if str(r.get("source", "")).startswith("http")]
     if records and len(sourced) / len(records) < config.MIN_SOURCED_FRACTION:
         fails.append(f"{len(records) - len(sourced)} records have no source URL")

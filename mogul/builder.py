@@ -124,7 +124,8 @@ def make_page(title, published=None):
     research, citations = llm.ask_json(RESEARCH_PROMPT.format(
         niche=config.NICHE, title=title, min_n=config.MIN_RECORDS,
         rules=config.NICHE_RULES.format(area=config.AREA)))
-    records = research.get("records", [])
+    found = research.get("records", [])
+    records = [r for r in found if quality.license_verified(r)]  # unconfirmed licenses never ship
     for r in records:  # research already asked for website/phone
         r["contacts_checked"] = today()
     body, _ = llm.ask(WRITE_PROMPT.format(
@@ -142,6 +143,9 @@ def make_page(title, published=None):
 
 
 def stale_page(pages):
+    flagged = [p for p in pages if p.get("needs_refresh")]
+    if flagged:
+        return flagged[0]
     cutoff = (dt.date.today() - dt.timedelta(days=config.STALE_AFTER_DAYS)).isoformat()
     old = [p for p in pages if p["updated"] < cutoff]
     return min(old, key=lambda p: p["updated"]) if old else None
@@ -171,12 +175,29 @@ def run_once():
             topic["reasons"] = fails
         store.save("topics.json", topics)
     if fails:
+        if old:  # keep the old page (unconfirmed rows stay hidden) and don't retry it every night
+            old["needs_refresh"] = False
+            old["verify_attempted"] = today()
+            store.save(f"pages/{old['slug']}.json", old)
         return {"action": "rejected", "title": page["title"], "reasons": fails}
     store.save(f"pages/{page['slug']}.json", page)
     return {"action": action, "title": page["title"], "slug": page["slug"], "records": len(page["records"])}
 
 
+def flag_unverified():
+    """Pages listing any business without a confirmed license get re-researched next."""
+    flagged = []
+    for page in store.pages():
+        if any(not quality.license_verified(r) for r in page["records"]) \
+                and not page.get("needs_refresh") and not page.get("verify_attempted"):
+            page["needs_refresh"] = True
+            store.save(f"pages/{page['slug']}.json", page)
+            flagged.append(page["title"])
+    return flagged
+
+
 def run():
+    flag_unverified()
     results = [run_once() for _ in range(config.PAGES_PER_NIGHT)]
     backfilled = add_contacts_next()
     return results + ([backfilled] if backfilled else [])

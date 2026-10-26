@@ -16,6 +16,12 @@ import store  # noqa: E402
 import telegram  # noqa: E402
 
 
+@pytest.fixture(autouse=True)
+def no_license_check(monkeypatch):
+    """Demo data isn't from a state board; tests that need the check turn it back on."""
+    monkeypatch.setattr(config, "LICENSE_SOURCE_DOMAIN", "")
+
+
 @pytest.fixture
 def sandbox(tmp_path, monkeypatch):
     monkeypatch.setattr(store, "ROOT", tmp_path / "data")
@@ -221,3 +227,44 @@ def test_contacts_match_loosely_and_retry(sandbox, monkeypatch):
     assert a["website"] == "https://baltic.example" and a["contacts_checked"]
     assert b["contacts_tries"] == 3 and b["contacts_checked"] and "website" not in b
     assert builder.add_contacts_next() is None
+
+
+def board(name, status="Current,Active", source="https://www.myfloridalicense.com/LicenseDetail.asp?id=1"):
+    return {"name": name, "facts": {"license_status": status}, "source": source}
+
+
+def test_only_board_confirmed_active_licenses_count(monkeypatch):
+    monkeypatch.setattr(config, "LICENSE_SOURCE_DOMAIN", "myfloridalicense.com")
+    assert quality.license_verified(board("A"))
+    assert quality.license_verified(board("A", source="https://myfloridalicense.com/x"))
+    assert not quality.license_verified(board("A", status="unknown"))
+    assert not quality.license_verified(board("A", status="Null and Void, Inactive"))
+    assert not quality.license_verified(board("A", source="https://www.ymelectricc.com/"))
+    assert not quality.license_verified(board("A", source="https://myfloridalicense.com.evil.example/"))
+
+
+def test_unconfirmed_businesses_are_hidden_and_page_requeued(sandbox, monkeypatch):
+    monkeypatch.setattr(config, "LICENSE_SOURCE_DOMAIN", "myfloridalicense.com")
+    page = demo_page("Dog-friendly campgrounds near Moab, UT")
+    page["records"] = [board("Good Electric"), board("Origins Electric", status="unknown",
+                                                     source="https://origins.example/about")]
+    store.save(f"pages/{page['slug']}.json", page)
+    render.build()
+    html = (sandbox / "site" / page["slug"] / "index.html").read_text()
+    assert "Good Electric" in html and "Origins Electric" not in html and "1 entries checked" in html
+    assert builder.flag_unverified() == [page["title"]]
+    assert builder.stale_page(store.pages())["slug"] == page["slug"]
+    assert any("not confirmed" in f for f in quality.check(store.pages()[0], []))
+
+
+def test_failed_refresh_does_not_block_new_pages(sandbox, monkeypatch):
+    monkeypatch.setattr(config, "LICENSE_SOURCE_DOMAIN", "myfloridalicense.com")
+    page = demo_page("Dog-friendly campgrounds near Moab, UT")
+    page["records"] = [board("Good Electric"), board("Bad Co", status="unknown")]
+    page["updated"] = builder.today()  # recent, so only the license flag can make it stale
+    store.save(f"pages/{page['slug']}.json", page)
+    monkeypatch.setattr(builder, "make_page", lambda title, published=None: {**page, "records": []})
+    assert builder.run()[0]["action"] == "rejected"
+    old = store.pages()[0]
+    assert old["verify_attempted"] and not old["needs_refresh"]
+    assert builder.flag_unverified() == [] and builder.stale_page(store.pages()) is None
