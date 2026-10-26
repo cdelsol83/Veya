@@ -1,0 +1,156 @@
+[
+  {
+    "name": "ERGO NEXT Insurance Affiliate",
+    "network": "Impact",
+    "signup_url": "https://www.nextinsurance.com/become-a-next-insurance-affiliate/",
+    "commission": "unknown",
+    "cookie_days": "unknown",
+    "type": "self_serve",
+    "contact_email": "jacob.m@next-insurance.com",
+    "source": "https://www.nextinsurance.com/become-a-next-insurance-affiliate/",
+    "status": "new"
+  },
+  {
+    "name": "Homestead Pros Affiliate Program",
+    "network": "in-house",
+    "signup_url": "https://affiliates.homesteadpros.com/",
+    "commission": "20% recurring monthly on paid directory memberships (stated examples: $9.40, $19.40, or $29.40 per month by plan)",
+    "cookie_days": "unknown",
+    "type": "self_serve",
+    "contact_email": "",
+    "source": "https://affiliates.homesteadpros.com/",
+    "status": "new"
+  },
+  {
+    "name": "Housecall Pro Affiliate",
+    "network": "PartnerStack",
+    "signup_url": "https://dash.partnerstack.com/application?company=housecallpro&group=paidaffiliates",
+    "commission": "up to $250 per customer (lead plus enrollment; PartnerStack listing also states $10 per lead and $180 per enrollment, up to $320)",
+    "cookie_days": "unknown",
+    "type": "self_serve",
+    "contact_email": "",
+    "source": "https://www.housecallpro.com/paid-affiliates/",
+    "status": "new"
+  },
+  {
+    "name": "Jobber Affiliate",
+    "network": "PartnerStack",
+    "signup_url": "https://jobber.partnerstack.com/?group=baseaffiliate",
+    "commission": "unknown",
+    "cookie_days": "unknown",
+    "type": "self_serve",
+    "contact_email": "",
+    "source": "https://www.getjobber.com/affiliates/",
+    "status": "new"
+  },
+  {
+    "name": "Modernize Affiliate Program",
+    "network": "in-house",
+    "signup_url": "https://modernize.com/contact?publisher",
+    "commission": "pay per lead for windows, roofing, HVAC, solar, and other trades; pricing varies by setup and trade",
+    "cookie_days": "unknown",
+    "type": "self_serve",
+    "contact_email": "",
+    "source": "https://modernize.com/affiliates",
+    "status": "new"
+  },
+  {
+    "name": "NiceJob Affiliate",
+    "network": "PartnerStack",
+    "signup_url": "https://nicejob.partnerstack.com/?group=marketingtier3",
+    "commission": "up to 25% on successful conversions (PartnerStack directory also lists 15% with a tiered increase)",
+    "cookie_days": 90,
+    "type": "self_serve",
+    "contact_email": "",
+    "source": "https://get.nicejob.com/partners",
+    "status": "new"
+  },
+  {
+    "name": "Nickel",
+    "network": "PartnerStack",
+    "signup_url": "https://market.partnerstack.com/page/nickeltechnologyinc",
+    "commission": "$250 per active business customer; $750 per active accounting-firm customer; $25 bonus for each of the first 5 approved accounts",
+    "cookie_days": "unknown",
+    "type": "self_serve",
+    "contact_email": "",
+    "source": "https://market.partnerstack.com/page/nickeltechnologyinc",
+    "status": "new"
+  },
+  {
+    "name": "Rebolt",
+    "network": "PartnerStack",
+    "signup_url": "https://market.partnerstack.com/page/rebolt",
+    "commission": "20% revenue share for the first year",
+    "cookie_days": "unknown",
+    "type": "self_serve",
+    "contact_email": "",
+    "source": "https://market.partnerstack.com/page/rebolt",
+    "status": "new"
+  },
+  {
+    "name": "REV Affiliate Program",
+    "network": "in-house",
+    "signup_url": "https://www.aixrev.com/affiliates",
+    "commission": "40% monthly recurring on active subscriptions",
+    "cookie_days": "unknown",
+    "type": "self_serve",
+    "contact_email": "",
+    "source": "https://www.aixrev.com/affiliates",
+    "status": "new"
+  },
+  {
+    "name": "ServiceTitan Referral Partner Program",
+    "network": "in-house",
+    "signup_url": "https://refer.servicetitan.com/welcome",
+    "commission": "$500 if a qualified referral attends a demo; New Titan reward up to $10,000 per signup (tiered share of annual spend, capped at $10,000)",
+    "cookie_days": "unknown",
+    "type": "self_serve",
+    "contact_email": "referrals@servicetitan.com",
+    "source": "https://www.servicetitan.com/referrals/partner",
+    "status": "new"
+  },
+  {
+    "name": "The Builder Market (US)",
+    "network": "Awin",
+    "signup_url": "https://ui.awin.com/merchant-profile/114100",
+    "commission": "40% recurring on SaaS and subscriptions; also stated as $100 per Vetted Pro annual sign-up and $12 per project posted or lead",
+    "cookie_days": 90,
+    "type": "self_serve",
+    "contact_email": "",
+    "source": "https://ui.awin.com/merchant-profile/114100",
+    "status": "new"
+  },
+  {
+    "name": "Thimble Affiliate Program",
+    "network": "FlexOffers",
+    "signup_url": "https://www.flexoffers.com/affiliate-programs/thimble-affiliate-program/",
+    "commission": "$24 per order",
+    "cookie_days": "unknown",
+    "type": "self_serve",
+    "contact_email": "",
+    "source": "https://www.flexoffers.com/affiliate-programs/thimble-affiliate-program/",
+    "status": "new"
+  },
+  {
+    "name": "Tradify Partner Referral",
+    "network": "PartnerStack",
+    "signup_url": "https://market.partnerstack.com/page/tradify",
+    "commission": "USD $200 per paid customer (UK £150, AUD $300, NZD $300); customer must stay active 60 days",
+    "cookie_days": "unknown",
+    "type": "self_serve",
+    "contact_email": "",
+    "source": "https://market.partnerstack.com/page/tradify",
+    "status": "new"
+  },
+  {
+    "name": "Workiz Partner Program",
+    "network": "in-house",
+    "signup_url": "https://www.workiz.com/partners/",
+    "commission": "unknown",
+    "cookie_days": "unknown",
+    "type": "self_serve",
+    "contact_email": "",
+    "source": "https://www.workiz.com/partners/",
+    "status": "new"
+  }
+]
