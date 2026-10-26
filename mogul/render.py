@@ -121,6 +121,8 @@ def contacts(pages):
     out = {}
     for p in pages:
         for r in p["records"]:
+            if not quality.license_verified(r):
+                continue
             site, phone = clean_website(r.get("website")), phone_of(r)
             if not (site or phone):
                 continue
@@ -200,6 +202,7 @@ something changed.</footer></body></html>"""
 
 
 def render_page(p):
+    p = {**p, "records": [r for r in p["records"] if quality.license_verified(r)]}
     e = html.escape
     url = f"{config.SITE_URL}/{p['slug']}/"
     ld = {"@context": "https://schema.org", "@type": "ItemList", "name": p["title"],

@@ -39,6 +39,8 @@ Do not invent reviews, ratings or prices.
 License types by trade: pool & spa = Certified or Registered Pool/Spa Contractor (CPC/RP);
 general contractors = Certified or Registered General, Building or Residential Contractor
 (CGC/CBC/CRC/RG/RB/RR); give the exact type in "license_type"."""
+# Only businesses whose license is active AND whose source is this site are listed ("" disables)
+LICENSE_SOURCE_DOMAIN = "myfloridalicense.com"
 OWNER_NAME = "Your Name"
 # CAN-SPAM requires a real postal address in commercial email. Outreach drafts are skipped
 # until both of these are filled in.
