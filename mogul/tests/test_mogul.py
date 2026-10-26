@@ -205,3 +205,18 @@ def test_beacon_only_when_token_set(monkeypatch):
     assert render.beacon() == ""
     monkeypatch.setattr(config, "CLOUDFLARE_ANALYTICS_TOKEN", "abc123")
     assert "cloudflareinsights" in render.beacon() and "abc123" in render.beacon()
+
+
+def test_contacts_match_loosely_and_retry(sandbox, monkeypatch):
+    page = demo_page("Dog-friendly campgrounds near Moab, UT")
+    page["records"] = [{"name": "Baltic Electrical LLC", "facts": {}, "source": "https://x.example"},
+                       {"name": "Missing Co", "facts": {}, "source": "https://x.example"}]
+    store.save(f"pages/{page['slug']}.json", page)
+    reply = [{"name": "baltic electrical", "website": "https://baltic.example", "phone": "305-555-0100"}]
+    monkeypatch.setattr(builder.llm, "ask_json", lambda *a, **k: (reply, []))
+    for _ in range(3):
+        builder.add_contacts_next()
+    a, b = store.pages()[0]["records"]
+    assert a["website"] == "https://baltic.example" and a["contacts_checked"]
+    assert b["contacts_tries"] == 3 and b["contacts_checked"] and "website" not in b
+    assert builder.add_contacts_next() is None
