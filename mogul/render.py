@@ -23,7 +23,7 @@ a{color:var(--accent)}h1{line-height:1.2;font-size:2rem}
 .disclosure{border-left:3px solid var(--line);padding-left:12px}
 .tablewrap{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.92rem}
 th,td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
-ul.pages{padding-left:0;list-style:none}ul.pages li{padding:10px 0;border-bottom:1px solid var(--line)}
+td.contact{white-space:nowrap}ul.pages{padding-left:0;list-style:none}ul.pages li{padding:10px 0;border-bottom:1px solid var(--line)}
 footer{padding:32px 16px}
 """
 
@@ -86,10 +86,57 @@ def affiliate_url(record):
     return None
 
 
+# Directories are not a business's own site; never send visitors there.
+AGGREGATORS = ("yelp.", "angi.", "homeadvisor.", "thumbtack.", "bbb.org", "yellowpages.", "porch.",
+               "houzz.", "nextdoor.", "mapquest.", "facebook.", "instagram.", "google.", "manta.")
+
+
+def biz_id(name):
+    return re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")[:60]
+
+
+def clean_phone(raw):
+    """(display, tel) for a US number, else None."""
+    digits = re.sub(r"\D", "", str(raw or ""))
+    if len(digits) == 11 and digits[0] == "1":
+        digits = digits[1:]
+    if len(digits) != 10:
+        return None
+    return f"({digits[:3]}) {digits[3:6]}-{digits[6:]}", f"tel:+1{digits}"
+
+
+def clean_website(url):
+    url = str(url or "").strip()
+    if not re.match(r"https?://[^\s/]+\.[^\s/]+", url) or any(a in url.lower() for a in AGGREGATORS):
+        return None
+    return url
+
+
+def phone_of(r):
+    return clean_phone(r.get("phone") or r.get("facts", {}).get("phone"))
+
+
+def contacts(pages):
+    """id -> {name, website, phone} for every listed business with a usable website or phone."""
+    out = {}
+    for p in pages:
+        for r in p["records"]:
+            site, phone = clean_website(r.get("website")), phone_of(r)
+            if not (site or phone):
+                continue
+            key = base = biz_id(r["name"])
+            n = 2
+            while key in out and (out[key]["website"], out[key]["phone"]) != (site, phone):
+                key, n = f"{base}-{n}", n + 1
+            out[key] = {"name": r["name"], "website": site, "phone": phone}
+            r["_id"] = key
+    return out
+
+
 def records_table(records):
     keys = []
     for r in records:
-        keys += [k for k in r.get("facts", {}) if k not in keys]
+        keys += [k for k in r.get("facts", {}) if k not in keys and k not in ("phone", "website")]
     keys = keys[:6]
     e = html.escape
     head = "".join(f"<th>{e(k.replace('_', ' ').capitalize())}</th>" for k in keys)
@@ -97,14 +144,41 @@ def records_table(records):
     for r in records:
         name = e(r["name"])
         aff = affiliate_url(r)
+        site, phone, bid = clean_website(r.get("website")), phone_of(r), r.get("_id")
         if aff:
             name = f'<a href="{e(aff)}" rel="sponsored nofollow">{name}</a>'
+        elif site and bid:
+            name = f'<a href="../go/{bid}/" rel="nofollow">{name}</a>'
         loc = f"<br><span class=meta>{e(r['location'])}</span>" if r.get("location") else ""
+        contact = []
+        if phone and bid:
+            contact.append(f'<a href="../call/{bid}/" rel="nofollow">{phone[0]}</a>')
+        if site and bid:
+            contact.append(f'<a href="../go/{bid}/" rel="nofollow">Website</a>')
         cells = "".join(f"<td>{e(str(r.get('facts', {}).get(k, '-')))}</td>" for k in keys)
         src = f'<a href="{e(r["source"])}" rel="nofollow">source</a>'
-        rows.append(f"<tr><td>{name}{loc}</td>{cells}<td>{src}</td></tr>")
-    return (f'<div class=tablewrap><table><thead><tr><th>Name</th>{head}<th>Verified</th></tr></thead>'
-            f'<tbody>{"".join(rows)}</tbody></table></div>')
+        rows.append(f"<tr><td>{name}{loc}</td><td class=contact>{'<br>'.join(contact) or '-'}</td>"
+                    f"{cells}<td>{src}</td></tr>")
+    return (f'<div class=tablewrap><table><thead><tr><th>Name</th><th>Contact</th>{head}<th>Verified</th>'
+            f'</tr></thead><tbody>{"".join(rows)}</tbody></table></div>')
+
+
+def beacon():
+    if not config.CLOUDFLARE_ANALYTICS_TOKEN:
+        return ""
+    data = html.escape(json.dumps({"token": config.CLOUDFLARE_ANALYTICS_TOKEN}))
+    return f'<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon="{data}"></script>'
+
+
+def render_redirect(name, target, label):
+    """A tiny page that Cloudflare counts as a view, then forwards the visitor. One per business."""
+    e = html.escape
+    return f"""<!doctype html><html lang=en><head><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noindex,nofollow">
+<meta http-equiv=refresh content="2;url={e(target)}"><title>{e(label)} {e(name)}</title>{beacon()}</head>
+<body style="font:17px system-ui,sans-serif;padding:24px">
+<p>{e(label)} <a href="{e(target)}" rel="nofollow">{e(name)}</a>…</p>
+<script>setTimeout(function(){{location.replace({json.dumps(target)})}},500)</script></body></html>"""
 
 
 def layout(title, description, canonical, body, extra_head="", home="./"):
@@ -119,7 +193,7 @@ def layout(title, description, canonical, body, extra_head="", home="./"):
     return f"""<!doctype html><html lang=en><head><meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
 <title>{e(title)}</title><meta name=description content="{e(description)}">
-<link rel=canonical href="{e(canonical)}">{verify}<style>{CSS}</style>{plausible}{extra_head}</head>
+<link rel=canonical href="{e(canonical)}">{verify}<style>{CSS}</style>{plausible}{beacon()}{extra_head}</head>
 <body><header><a href="{home}">{e(config.SITE_NAME)}</a></header><main>{body}</main>
 <footer>{e(config.SITE_TAGLINE)} Facts are checked against the linked sources; tell us if
 something changed.</footer></body></html>"""
@@ -155,6 +229,13 @@ def build():
         shutil.rmtree(OUT)
     OUT.mkdir()
     (OUT / "index.html").write_text(render_index(pages))
+    for bid, c in contacts(pages).items():
+        if c["website"]:
+            (OUT / "go" / bid).mkdir(parents=True)
+            (OUT / "go" / bid / "index.html").write_text(render_redirect(c["name"], c["website"], "Opening"))
+        if c["phone"]:
+            (OUT / "call" / bid).mkdir(parents=True)
+            (OUT / "call" / bid / "index.html").write_text(render_redirect(c["name"], c["phone"][1], "Calling"))
     for p in pages:
         d = OUT / p["slug"]
         d.mkdir()
@@ -167,5 +248,5 @@ def build():
         + "".join(f"  <url><loc>{html.escape(u)}</loc>" + (f"<lastmod>{m}</lastmod>" if m else "")
                   + "</url>\n" for u, m in urls)
         + "</urlset>\n")
-    (OUT / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {config.SITE_URL}/sitemap.xml\n")
+    (OUT / "robots.txt").write_text(f"User-agent: *\nDisallow: /go/\nDisallow: /call/\nAllow: /\nSitemap: {config.SITE_URL}/sitemap.xml\n")
     return len(pages)

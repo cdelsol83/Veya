@@ -28,6 +28,10 @@ def answer(prompt):
         title = re.search(r'titled "(.+?)"', prompt).group(1)
         records = json.loads(prompt.split("fact not present in it:\n", 1)[1].split("\nStructure", 1)[0])
         return body(title, records)
+    if "published phone number" in prompt:
+        names = re.findall(r"^- (.+?) \(", prompt, re.M)
+        return json.dumps([{"name": n, "website": "https://example.com/demo/site", "phone": "(555) 010-0000"}
+                           for n in names])
     if "affiliate or referral programs" in prompt:
         return json.dumps(programs())
     if "partnership email" in prompt:
@@ -58,6 +62,8 @@ def research(title):
                 "season": rng.choice(["Year-round", "Apr-Oct", "May-Sep", "Mar-Nov"]),
             },
             "vendor": rng.choice(VENDORS),
+            "website": f"https://example.com/demo/{re.sub('[^a-z]+', '-', name.lower())}-site",
+            "phone": f"(555) {rng.randint(200, 999)}-{rng.randint(1000, 9999)}",
             "source": f"https://example.com/demo/{re.sub('[^a-z]+', '-', name.lower())}",
         })
     return {"description": f"{len(records)} dog-friendly campgrounds near {city}, with pet fees, "

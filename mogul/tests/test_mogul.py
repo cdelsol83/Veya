@@ -166,3 +166,42 @@ def test_priority_topics_go_first_and_never_repeat(monkeypatch):
     out = builder.add_priority_topics(topics)
     assert [t["title"] for t in out] == ["Pool pros in Sarasota, FL", "Plumbers in Naples, FL", "X"]
     assert builder.add_priority_topics(out) == out
+
+
+def test_contact_cleaning():
+    assert render.clean_phone("904-396-7044") == ("(904) 396-7044", "tel:+19043967044")
+    assert render.clean_phone("+1 (904) 396 7044")[1] == "tel:+19043967044"
+    assert render.clean_phone("unknown") is None and render.clean_phone("") is None
+    assert render.clean_website("https://turnerplumbing.com/") == "https://turnerplumbing.com/"
+    assert render.clean_website("https://www.yelp.com/biz/turner") is None
+    assert render.clean_website("turnerplumbing") is None
+
+
+def test_site_links_businesses_through_counted_redirects(sandbox):
+    builder.run()
+    render.build()
+    page = store.pages()[0]
+    html = (sandbox / "site" / page["slug"] / "index.html").read_text()
+    bid = render.biz_id(page["records"][0]["name"])
+    assert f'href="../go/{bid}/"' in html and f'href="../call/{bid}/"' in html
+    go = (sandbox / "site" / "go" / bid / "index.html").read_text()
+    assert page["records"][0]["website"] in go and "noindex" in go
+    assert "tel:+1555" in (sandbox / "site" / "call" / bid / "index.html").read_text()
+    assert "Disallow: /go/" in (sandbox / "site" / "robots.txt").read_text()
+    assert "/go/" not in (sandbox / "site" / "sitemap.xml").read_text()
+
+
+def test_old_pages_get_contacts_backfilled(sandbox):
+    page = demo_page("Dog-friendly campgrounds near Moab, UT")
+    for r in page["records"]:
+        r.pop("website"), r.pop("phone")
+    store.save(f"pages/{page['slug']}.json", page)
+    assert builder.add_contacts_next()["records"] == len(page["records"])
+    assert all(r["website"] and r["phone"] for r in store.pages()[0]["records"])
+    assert builder.add_contacts_next() is None
+
+
+def test_beacon_only_when_token_set(monkeypatch):
+    assert render.beacon() == ""
+    monkeypatch.setattr(config, "CLOUDFLARE_ANALYTICS_TOKEN", "abc123")
+    assert "cloudflareinsights" in render.beacon() and "abc123" in render.beacon()
