@@ -12,7 +12,7 @@ on:
       task:
         description: "What to run"
         type: choice
-        options: [scout, build, poll, report, deals]
+        options: [scout, build, contacts, poll, report, deals]
         default: scout
 
 permissions:
@@ -76,14 +76,14 @@ jobs:
           git diff --cached --quiet && exit 0
           git commit -m "Mogul ${{ steps.pick.outputs.task }} $(date -u +%F)"
           for i in 1 2 3; do git pull --rebase && git push && break; sleep 5; done
-      - if: steps.pick.outputs.task == 'build'
+      - if: steps.pick.outputs.task == 'build' || steps.pick.outputs.task == 'contacts'
         uses: actions/upload-pages-artifact@v3
         with:
           path: mogul/site
 
   deploy:
     needs: run
-    if: needs.run.outputs.task == 'build'
+    if: needs.run.outputs.task == 'build' || needs.run.outputs.task == 'contacts'
     runs-on: ubuntu-latest
     environment:
       name: github-pages

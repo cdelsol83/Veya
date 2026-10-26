@@ -3,6 +3,7 @@
   python mogul.py scout              rank niche candidates from X/Reddit complaints (run once)
   python mogul.py build              research + publish one page (the nightly job), render site/
   python mogul.py render             re-render site/ from data/ without calling the model
+  python mogul.py contacts           add website/phone to every page that lacks them, render site/
   python mogul.py deals              find affiliate programs, draft outreach for your approval
   python mogul.py poll               read your Telegram taps, send approved emails
   python mogul.py report [week]      send the money report to Telegram
@@ -56,6 +57,12 @@ def main(argv):
             elif r["action"] == "rejected":
                 telegram.send(f"🚫 Quality gate blocked \"{r['title']}\": " + "; ".join(r["reasons"]))
         print(f"site/ rendered with {n} pages")
+    elif cmd == "contacts":
+        for page in store.pages():
+            n = builder.add_contacts(page)
+            if n:
+                print(f"{page['title']}: checked {n} businesses")
+        print(f"site/ rendered with {render.build()} pages")
     elif cmd == "render":
         print(f"site/ rendered with {render.build()} pages")
     elif cmd == "deals":

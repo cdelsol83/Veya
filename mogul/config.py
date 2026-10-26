@@ -79,6 +79,8 @@ XAI_MODEL = os.environ.get("MOGUL_MODEL") or "grok-4.7"
 XAI_API_KEY = os.environ.get("XAI_API_KEY", "")
 TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN", "")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "")
+# Cloudflare Web Analytics site token (public; from Analytics & Logs > Web Analytics > Manage site)
+CLOUDFLARE_ANALYTICS_TOKEN = ""
 PLAUSIBLE_API_KEY = os.environ.get("PLAUSIBLE_API_KEY", "")
 PLAUSIBLE_SITE_ID = os.environ.get("PLAUSIBLE_SITE_ID", "")
 SMTP_HOST = os.environ.get("SMTP_HOST", "")

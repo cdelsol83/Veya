@@ -23,7 +23,9 @@ RESEARCH_PROMPT = """Niche: {niche}. Page: "{title}".
 Use web search to collect {min_n}-12 real entries for this page. For each entry return:
   "name", "location" (if relevant), "facts": an object of short factual fields that matter
   to someone choosing (prices, fees, rules, limits, hours, features), "vendor" (the brand/
-  booking platform if any, else ""), and "source": the URL where you verified the facts.
+  booking platform if any, else ""), "website": the business's own website (not a directory
+  such as Yelp, Angi, BBB or Facebook) or "", "phone": the business phone number as published
+  on its own site or license record, or "", and "source": the URL where you verified the facts.
 Only include entries whose facts you found on the source page. Never invent values;
 use "unknown" when a fact isn't stated.
 Return JSON: {{"description": one-sentence meta description, "records": [...]}}"""
@@ -48,6 +50,39 @@ def slugify(title):
 
 def today():
     return dt.date.today().isoformat()
+
+
+CONTACTS_PROMPT = """For each of these businesses in {area}, use web search to find its own
+website (not a directory such as Yelp, Angi, BBB or Facebook) and its published phone number.
+{businesses}
+Return a JSON array of {{"name": exactly as given, "website": URL or "", "phone": number or ""}}.
+Use "" when you cannot find it on the business's own site or license record. Never guess."""
+
+
+def add_contacts(page):
+    """Fill in website/phone for records that predate those fields. Returns how many were checked."""
+    missing = [r for r in page["records"] if "website" not in r or "phone" not in r]
+    if not missing:
+        return 0
+    listing = "\n".join(f"- {r['name']} ({r.get('location', '')}), license "
+                        f"{r.get('facts', {}).get('license_number', 'unknown')}" for r in missing)
+    found, _ = llm.ask_json(CONTACTS_PROMPT.format(area=config.AREA, businesses=listing))
+    by_name = {f.get("name", "").strip().lower(): f for f in found if isinstance(f, dict)}
+    for r in missing:
+        f = by_name.get(r["name"].strip().lower(), {})
+        r["website"] = f.get("website") or ""
+        r["phone"] = f.get("phone") or r.get("facts", {}).get("phone", "")
+    store.save(f"pages/{page['slug']}.json", page)
+    return len(missing)
+
+
+def add_contacts_next():
+    """Backfill contacts on the oldest page that still lacks them (one per night)."""
+    for page in store.pages():
+        n = add_contacts(page)
+        if n:
+            return {"action": "contacts", "title": page["title"], "records": n}
+    return None
 
 
 def add_priority_topics(topics):
@@ -125,4 +160,6 @@ def run_once():
 
 
 def run():
-    return [run_once() for _ in range(config.PAGES_PER_NIGHT)]
+    results = [run_once() for _ in range(config.PAGES_PER_NIGHT)]
+    backfilled = add_contacts_next()
+    return results + ([backfilled] if backfilled else [])
