@@ -202,6 +202,7 @@ def test_old_pages_get_contacts_backfilled(sandbox):
 
 
 def test_beacon_only_when_token_set(monkeypatch):
+    monkeypatch.setattr(config, "CLOUDFLARE_ANALYTICS_TOKEN", "")
     assert render.beacon() == ""
     monkeypatch.setattr(config, "CLOUDFLARE_ANALYTICS_TOKEN", "abc123")
     assert "cloudflareinsights" in render.beacon() and "abc123" in render.beacon()
