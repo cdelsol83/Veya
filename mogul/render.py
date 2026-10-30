@@ -1,8 +1,10 @@
 """Render data/pages/*.json into a static site in site/ (index, pages, sitemap, robots)."""
+import datetime as dt
 import html
 import json
 import re
 import shutil
+import urllib.parse
 from pathlib import Path
 
 import config
@@ -24,7 +26,9 @@ a{color:var(--accent)}h1{line-height:1.2;font-size:2rem}
 .tablewrap{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.92rem}
 th,td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
 td.contact{white-space:nowrap}ul.pages{padding-left:0;list-style:none}ul.pages li{padding:10px 0;border-bottom:1px solid var(--line)}
-footer{padding:32px 16px}
+footer{padding:32px 16px}.footnav{margin-top:8px}
+.resources{border:1px solid var(--line);border-radius:8px;padding:4px 16px;margin:24px 0}
+ul.tools{padding-left:18px}ul.tools li{margin:10px 0}
 """
 
 
@@ -198,7 +202,8 @@ def layout(title, description, canonical, body, extra_head="", home="./"):
 <link rel=canonical href="{e(canonical)}">{verify}<style>{CSS}</style>{plausible}{beacon()}{extra_head}</head>
 <body><header><a href="{home}">{e(config.SITE_NAME)}</a></header><main>{body}</main>
 <footer>{e(config.SITE_TAGLINE)} Facts are checked against the linked sources; tell us if
-something changed.</footer></body></html>"""
+something changed.<nav class=footnav><a href="{home}about/">About</a> · <a href="{home}for-contractors/">For contractors</a>
+· <a href="{home}contact/">Contact</a> · <a href="{home}privacy/">Privacy</a></nav></footer></body></html>"""
 
 
 def render_page(p):
@@ -211,9 +216,89 @@ def render_page(p):
     body = (f"<h1>{e(p['title'])}</h1>"
             f"<p class=meta>Updated {e(p['updated'])} · {len(p['records'])} entries checked</p>"
             f"<p class=disclosure>{quality.DISCLOSURE}. It never changes what we list or how.</p>"
-            f"{records_table(p['records'])}{markdown(p['body_md'])}")
+            f"{records_table(p['records'])}{markdown(p['body_md'])}{homeowner_resources()}")
     head = f'<script type="application/ld+json">{json.dumps(ld)}</script>'
     return layout(f"{p['title']} | {config.SITE_NAME}", p["description"], url, body, head, home="../")
+
+
+def mailto(subject):
+    return f"mailto:{config.CONTACT_EMAIL}?subject={urllib.parse.quote(subject)}"
+
+
+def homeowner_resources():
+    if not config.HOMEOWNER_RESOURCES:
+        return ""
+    e = html.escape
+    items = "".join(f'<li><a href="{e(r["url"])}" rel="sponsored nofollow">{e(r["name"])}</a>: {e(r["what"])}</li>'
+                    for r in config.HOMEOWNER_RESOURCES)
+    return (f"<aside class=resources><h3>Related for homeowners</h3><ul class=tools>{items}</ul>"
+            f"<p class=meta>{quality.DISCLOSURE}.</p></aside>")
+
+
+def info_page(slug, title, description, body):
+    url = f"{config.SITE_URL}/{slug}/"
+    return layout(f"{title} | {config.SITE_NAME}", description, url, f"<h1>{html.escape(title)}</h1>{body}", home="../")
+
+
+def info_pages():
+    """slug -> html for the About, Contact, Privacy and For contractors pages."""
+    e, site, email = html.escape, html.escape(config.SITE_NAME), html.escape(config.CONTACT_EMAIL)
+    tools = "".join(
+        f'<li><a href="{e(t["affiliate"] or t["url"])}" rel="{"sponsored nofollow" if t["affiliate"] else "nofollow"}">'
+        f'{e(t["name"])}</a>: {e(t["what"])}</li>' for t in config.CONTRACTOR_TOOLS)
+    sponsored = any(t["affiliate"] for t in config.CONTRACTOR_TOOLS)
+    return {
+        "about": ("About", f"About {config.SITE_NAME} and how listings are checked.", f"""
+<p>{site} lists independently owned, licensed trade contractors in {e(config.AREA)}: plumbers,
+electricians, HVAC contractors, roofers, pool &amp; spa contractors and general contractors.</p>
+<h2>How a business gets listed</h2>
+<ul><li>Its license is <strong>active on the state licensing board</strong>
+({e(config.LICENSE_SOURCE_DOMAIN or "the state board")}), and each listing links to that record.</li>
+<li>Its own website or state filing names an <strong>individual owner</strong> and no parent company.</li>
+<li>Listings are free. Businesses do not pay to be listed, and pages do not rank or rate them.</li></ul>
+<p>Pages are researched with the help of AI tools and checked against public records. Licenses change,
+so confirm the license on the linked record before you hire.</p>
+<p>Questions or corrections: <a href="mailto:{email}">{email}</a>.</p>"""),
+        "contact": ("Contact", f"Contact {config.SITE_NAME}.", f"""
+<p>Email <a href="mailto:{email}">{email}</a>. We read every message.</p>
+<ul><li><a href="{e(mailto("Correction to a listing"))}">Report something out of date</a> (a closed business,
+a changed phone number, a license that lapsed).</li>
+<li><a href="{e(mailto("Claim or update my listing"))}">Claim or update your business listing</a>.</li>
+<li><a href="{e(mailto("Remove my business"))}">Ask for your business to be removed</a>. We remove it promptly.</li></ul>"""),
+        "privacy": ("Privacy Policy", f"How {config.SITE_NAME} handles visitor data.", f"""
+<p class=meta>Last updated {e(dt.date.today().isoformat())}</p>
+<h2>What we collect</h2>
+<p>We use <strong>Cloudflare Web Analytics</strong> to count visits. It does not use cookies and does not
+collect personal information; it records things like the page viewed, referring site, country and
+browser type. When you tap a business's phone number or website link, the visit to that link's page
+on our site is counted the same way, so we can see how many people contact each business.</p>
+<p>We have no accounts, forms or newsletters on this site, so we do not collect names, email addresses
+or payment details. If you email us, we use your message only to reply to you.</p>
+<h2>Links and affiliates</h2>
+<p>Some links are affiliate links: if you sign up or buy through them, we may earn a commission at no
+extra cost to you. It never changes which businesses are listed or how. Other sites you visit from
+here have their own privacy policies.</p>
+<h2>Selling data</h2>
+<p>We do not sell or share personal information.</p>
+<h2>Contact</h2>
+<p>Privacy questions: <a href="mailto:{email}">{email}</a>.</p>"""),
+        "for-contractors": ("For contractors", f"How independent contractors get listed on {config.SITE_NAME}, "
+                            "and tools for running a small trade business.", f"""
+<p>{site} helps homeowners find <strong>independently owned, licensed</strong> trade businesses.
+Listings are free and are based on public records: an active license on the state licensing board
+and a named owner on your website or state filing.</p>
+<h2>Your listing</h2>
+<ul><li><a href="{e(mailto("Claim or update my listing"))}">Claim or update your listing</a>: send your
+license number and the details to change (phone, website, service area).</li>
+<li><a href="{e(mailto("Please list my business"))}">Ask to be listed</a>: include your license number
+and city.</li>
+<li><a href="{e(mailto("Remove my business"))}">Ask to be removed</a>.</li></ul>
+<h2>Tools for independent shops</h2>
+<p>Software and insurance that small trade businesses commonly use: software first, then insurance,
+each alphabetical. Not ranked.</p>
+<ul class=tools>{tools}</ul>
+{f'<p class=disclosure>{quality.DISCLOSURE}. It never changes which businesses are listed.</p>' if sponsored else ""}"""),
+    }
 
 
 def render_index(pages):
@@ -243,8 +328,12 @@ def build():
         d = OUT / p["slug"]
         d.mkdir()
         (d / "index.html").write_text(render_page(p))
+    for slug, (title, description, body) in info_pages().items():
+        (OUT / slug).mkdir()
+        (OUT / slug / "index.html").write_text(info_page(slug, title, description, body))
     urls = [(config.SITE_URL + "/", pages[-1]["updated"] if pages else "")] + [
-        (f"{config.SITE_URL}/{p['slug']}/", p["updated"]) for p in pages]
+        (f"{config.SITE_URL}/{p['slug']}/", p["updated"]) for p in pages] + [
+        (f"{config.SITE_URL}/{slug}/", "") for slug in info_pages()]
     (OUT / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'

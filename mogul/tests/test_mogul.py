@@ -268,3 +268,25 @@ def test_failed_refresh_does_not_block_new_pages(sandbox, monkeypatch):
     old = store.pages()[0]
     assert old["verify_attempted"] and not old["needs_refresh"]
     assert builder.flag_unverified() == [] and builder.stale_page(store.pages()) is None
+
+
+def test_info_pages_and_resource_slots(sandbox, monkeypatch):
+    builder.run()
+    render.build()
+    for slug in ("about", "contact", "privacy", "for-contractors"):
+        assert (sandbox / "site" / slug / "index.html").exists()
+        assert f"/{slug}/</loc>" in (sandbox / "site" / "sitemap.xml").read_text()
+    contact = (sandbox / "site" / "contact" / "index.html").read_text()
+    assert "mailto:hello@licensedlocal.org?subject=Remove%20my%20business" in contact
+    page = store.pages()[0]
+    html = (sandbox / "site" / page["slug"] / "index.html").read_text()
+    assert 'href="../privacy/"' in html and "Related for homeowners" not in html
+    tools = (sandbox / "site" / "for-contractors" / "index.html").read_text()
+    assert 'href="https://getjobber.com/" rel="nofollow"' in tools and "sponsored" not in tools
+
+    monkeypatch.setattr(config, "HOMEOWNER_RESOURCES", [{"name": "W", "url": "https://w.example/?ref=1", "what": "x"}])
+    monkeypatch.setattr(config, "CONTRACTOR_TOOLS", [{"name": "J", "url": "https://j.example", "affiliate": "https://j.example/?ref=me", "what": "y"}])
+    render.build()
+    assert 'rel="sponsored nofollow">W</a>' in (sandbox / "site" / page["slug"] / "index.html").read_text()
+    tools = (sandbox / "site" / "for-contractors" / "index.html").read_text()
+    assert 'href="https://j.example/?ref=me" rel="sponsored nofollow"' in tools and "commission" in tools

@@ -39,6 +39,26 @@ Do not invent reviews, ratings or prices.
 License types by trade: pool & spa = Certified or Registered Pool/Spa Contractor (CPC/RP);
 general contractors = Certified or Registered General, Building or Residential Contractor
 (CGC/CBC/CRC/RG/RB/RR); give the exact type in "license_type"."""
+CONTACT_EMAIL = "hello@licensedlocal.org"
+# Shown on the "For contractors" page. Put your affiliate tracking link in "affiliate" once a
+# program approves you; until then the plain "url" is used (no commission).
+CONTRACTOR_TOOLS = [
+    {"name": "Housecall Pro", "url": "https://www.housecallpro.com/", "affiliate": "",
+     "what": "Scheduling, dispatching, estimates, invoicing and payments for home service businesses."},
+    {"name": "Jobber", "url": "https://getjobber.com/", "affiliate": "",
+     "what": "Quoting, scheduling, invoicing and a client hub for small service businesses."},
+    {"name": "ServiceTitan", "url": "https://www.servicetitan.com/", "affiliate": "",
+     "what": "Field service management software aimed at larger plumbing, HVAC and electrical shops."},
+    {"name": "Tradify", "url": "https://www.tradifyhq.com/", "affiliate": "",
+     "what": "Job management, quoting, timesheets and invoicing for trade businesses."},
+    {"name": "NEXT Insurance", "url": "https://www.nextinsurance.com/", "affiliate": "",
+     "what": "Online general liability and other business insurance policies for contractors."},
+]
+# Small box on every listing page, e.g. home warranty programs once approved. Empty = hidden.
+HOMEOWNER_RESOURCES = [
+    # {"name": "Example Home Warranty", "url": "https://example.com/?ref=YOURCODE",
+    #  "what": "Home warranty plans that cover repairs to major systems and appliances."},
+]
 # Only businesses whose license is active AND whose source is this site are listed ("" disables)
 LICENSE_SOURCE_DOMAIN = "myfloridalicense.com"
 OWNER_NAME = "Your Name"
