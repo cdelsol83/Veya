@@ -17,7 +17,10 @@
   },
   {
     "title": "Independently owned general contractors in Sarasota, FL (license checked)",
-    "status": "queued"
+    "status": "rejected",
+    "reasons": [
+      "only 0 records (< 5)"
+    ]
   },
   {
     "title": "Independently owned HVAC contractors in Fort Myers, FL (license checked)",
