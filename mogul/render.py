@@ -225,12 +225,22 @@ def mailto(subject):
     return f"mailto:{config.CONTACT_EMAIL}?subject={urllib.parse.quote(subject)}"
 
 
+def outbound_links():
+    """slug -> (name, target) for tool and resource links, each sent through a counted /out/ page."""
+    links = {}
+    for t in config.CONTRACTOR_TOOLS:
+        links[biz_id(t["name"])] = (t["name"], t["affiliate"] or t["url"])
+    for r in config.HOMEOWNER_RESOURCES:
+        links[biz_id(r["name"])] = (r["name"], r["url"])
+    return links
+
+
 def homeowner_resources():
     if not config.HOMEOWNER_RESOURCES:
         return ""
     e = html.escape
-    items = "".join(f'<li><a href="{e(r["url"])}" rel="sponsored nofollow">{e(r["name"])}</a>: {e(r["what"])}</li>'
-                    for r in config.HOMEOWNER_RESOURCES)
+    items = "".join(f'<li><a href="../out/{biz_id(r["name"])}/" rel="sponsored nofollow">{e(r["name"])}</a>: '
+                    f'{e(r["what"])}</li>' for r in config.HOMEOWNER_RESOURCES)
     return (f"<aside class=resources><h3>Related for homeowners</h3><ul class=tools>{items}</ul>"
             f"<p class=meta>{quality.DISCLOSURE}.</p></aside>")
 
@@ -244,7 +254,7 @@ def info_pages():
     """slug -> html for the About, Contact, Privacy and For contractors pages."""
     e, site, email = html.escape, html.escape(config.SITE_NAME), html.escape(config.CONTACT_EMAIL)
     tools = "".join(
-        f'<li><a href="{e(t["affiliate"] or t["url"])}" rel="{"sponsored nofollow" if t["affiliate"] else "nofollow"}">'
+        f'<li><a href="../out/{biz_id(t["name"])}/" rel="{"sponsored nofollow" if t["affiliate"] else "nofollow"}">'
         f'{e(t["name"])}</a>: {e(t["what"])}</li>' for t in config.CONTRACTOR_TOOLS)
     sponsored = any(t["affiliate"] for t in config.CONTRACTOR_TOOLS)
     return {
@@ -328,6 +338,9 @@ def build():
         d = OUT / p["slug"]
         d.mkdir()
         (d / "index.html").write_text(render_page(p))
+    for slug, (name, target) in outbound_links().items():
+        (OUT / "out" / slug).mkdir(parents=True)
+        (OUT / "out" / slug / "index.html").write_text(render_redirect(name, target, "Opening"))
     for slug, (title, description, body) in info_pages().items():
         (OUT / slug).mkdir()
         (OUT / slug / "index.html").write_text(info_page(slug, title, description, body))
@@ -340,5 +353,5 @@ def build():
         + "".join(f"  <url><loc>{html.escape(u)}</loc>" + (f"<lastmod>{m}</lastmod>" if m else "")
                   + "</url>\n" for u, m in urls)
         + "</urlset>\n")
-    (OUT / "robots.txt").write_text(f"User-agent: *\nDisallow: /go/\nDisallow: /call/\nAllow: /\nSitemap: {config.SITE_URL}/sitemap.xml\n")
+    (OUT / "robots.txt").write_text(f"User-agent: *\nDisallow: /go/\nDisallow: /call/\nDisallow: /out/\nAllow: /\nSitemap: {config.SITE_URL}/sitemap.xml\n")
     return len(pages)

@@ -284,11 +284,15 @@ def test_info_pages_and_resource_slots(sandbox, monkeypatch):
     html = (sandbox / "site" / page["slug"] / "index.html").read_text()
     assert 'href="../privacy/"' in html and "Related for homeowners" not in html
     tools = (sandbox / "site" / "for-contractors" / "index.html").read_text()
-    assert 'href="https://getjobber.com/" rel="nofollow"' in tools and "sponsored" not in tools
+    assert 'href="../out/jobber/" rel="nofollow"' in tools and "sponsored" not in tools
+    assert "https://getjobber.com/" in (sandbox / "site" / "out" / "jobber" / "index.html").read_text()
+    assert "Disallow: /out/" in (sandbox / "site" / "robots.txt").read_text()
 
     monkeypatch.setattr(config, "HOMEOWNER_RESOURCES", [{"name": "W", "url": "https://w.example/?ref=1", "what": "x"}])
     monkeypatch.setattr(config, "CONTRACTOR_TOOLS", [{"name": "J", "url": "https://j.example", "affiliate": "https://j.example/?ref=me", "what": "y"}])
     render.build()
-    assert 'rel="sponsored nofollow">W</a>' in (sandbox / "site" / page["slug"] / "index.html").read_text()
+    assert 'href="../out/w/" rel="sponsored nofollow">W</a>' in (sandbox / "site" / page["slug"] / "index.html").read_text()
+    assert "https://w.example/?ref=1" in (sandbox / "site" / "out" / "w" / "index.html").read_text()
     tools = (sandbox / "site" / "for-contractors" / "index.html").read_text()
-    assert 'href="https://j.example/?ref=me" rel="sponsored nofollow"' in tools and "commission" in tools
+    assert 'href="../out/j/" rel="sponsored nofollow"' in tools and "commission" in tools
+    assert "https://j.example/?ref=me" in (sandbox / "site" / "out" / "j" / "index.html").read_text()
