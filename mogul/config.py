@@ -47,7 +47,7 @@ CONTRACTOR_TOOLS = [
      "what": "Scheduling, dispatching, estimates, invoicing and payments for home service businesses."},
     {"name": "Jobber", "url": "https://getjobber.com/", "affiliate": "",
      "what": "Quoting, scheduling, invoicing and a client hub for small service businesses."},
-    {"name": "ServiceTitan", "url": "https://www.servicetitan.com/", "affiliate": "",
+    {"name": "ServiceTitan", "url": "https://www.servicetitan.com/", "affiliate": "https://join.servicetitan.com/mzZanzq",
      "what": "Field service management software aimed at larger plumbing, HVAC and electrical shops."},
     {"name": "Tradify", "url": "https://www.tradifyhq.com/", "affiliate": "",
      "what": "Job management, quoting, timesheets and invoicing for trade businesses."},
