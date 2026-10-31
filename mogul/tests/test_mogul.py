@@ -271,6 +271,8 @@ def test_failed_refresh_does_not_block_new_pages(sandbox, monkeypatch):
 
 
 def test_info_pages_and_resource_slots(sandbox, monkeypatch):
+    monkeypatch.setattr(config, "CONTRACTOR_TOOLS", [{**t, "affiliate": ""} for t in config.CONTRACTOR_TOOLS])
+    monkeypatch.setattr(config, "HOMEOWNER_RESOURCES", [])
     builder.run()
     render.build()
     for slug in ("about", "contact", "privacy", "for-contractors"):
