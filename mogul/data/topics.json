@@ -44,7 +44,10 @@
   },
   {
     "title": "Independently owned plumbing companies in St. Petersburg, FL",
-    "status": "queued"
+    "status": "rejected",
+    "reasons": [
+      "only 0 records (< 5)"
+    ]
   },
   {
     "title": "Independently owned electrical contractors in Cape Coral, FL (license checked)",
