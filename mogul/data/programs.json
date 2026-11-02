@@ -1,5 +1,16 @@
 [
   {
+    "name": "Contractor Foreman",
+    "network": "PartnerStack",
+    "signup_url": "https://dash.partnerstack.com/application?company=contractorforeman&gref=page",
+    "commission": "$150 when a qualified referral attends a demo, plus 20% of the customer's first purchase",
+    "cookie_days": "unknown",
+    "type": "self_serve",
+    "contact_email": "",
+    "source": "https://contractorforeman.com/affiliates/",
+    "status": "new"
+  },
+  {
     "name": "ERGO NEXT Insurance Affiliate",
     "network": "Impact",
     "signup_url": "https://www.nextinsurance.com/become-a-next-insurance-affiliate/",
@@ -8,6 +19,28 @@
     "type": "self_serve",
     "contact_email": "jacob.m@next-insurance.com",
     "source": "https://www.nextinsurance.com/become-a-next-insurance-affiliate/",
+    "status": "new"
+  },
+  {
+    "name": "Ferguson Home",
+    "network": "Impact",
+    "signup_url": "https://app.impact.com/campaign-promo-signup/Build-with-Ferguson.brand",
+    "commission": "Public Impact actions listed: API Online Sale 2%; ProSignup $10; SHW Booking Complete $25; SHW Booking Start $0",
+    "cookie_days": "unknown",
+    "type": "self_serve",
+    "contact_email": "",
+    "source": "https://app.impact.com/campaign-promo-signup/Build-with-Ferguson.brand",
+    "status": "new"
+  },
+  {
+    "name": "Homestead Pros",
+    "network": "in-house",
+    "signup_url": "https://affiliates.homesteadpros.com/",
+    "commission": "20% recurring monthly on paid directory memberships (Gold $9.40/mo, Platinum $19.40/mo, Diamond $29.40/mo while membership stays paid)",
+    "cookie_days": "unknown",
+    "type": "self_serve",
+    "contact_email": "",
+    "source": "https://affiliates.homesteadpros.com/",
     "status": "new"
   },
   {
@@ -22,6 +55,17 @@
     "status": "new"
   },
   {
+    "name": "Housecall Pro",
+    "network": "PartnerStack",
+    "signup_url": "https://dash.partnerstack.com/application?company=housecallpro&group=paidaffiliates",
+    "commission": "PartnerStack listing: up to $320 per qualified lead, $10 per new lead, and $180 per enrollment (one-time). Brand page also states up to $250 per customer by industry.",
+    "cookie_days": 90,
+    "type": "self_serve",
+    "contact_email": "",
+    "source": "https://market.partnerstack.com/program/housecallpro",
+    "status": "new"
+  },
+  {
     "name": "Housecall Pro Affiliate",
     "network": "PartnerStack",
     "signup_url": "https://dash.partnerstack.com/application?company=housecallpro&group=paidaffiliates",
@@ -30,6 +74,17 @@
     "type": "self_serve",
     "contact_email": "",
     "source": "https://www.housecallpro.com/paid-affiliates/",
+    "status": "new"
+  },
+  {
+    "name": "Jobber",
+    "network": "PartnerStack",
+    "signup_url": "https://jobber.partnerstack.com/?group=baseaffiliate",
+    "commission": "unknown",
+    "cookie_days": "unknown",
+    "type": "self_serve",
+    "contact_email": "",
+    "source": "https://www.getjobber.com/affiliates/",
     "status": "new"
   },
   {
@@ -77,6 +132,17 @@
     "status": "new"
   },
   {
+    "name": "Profitise",
+    "network": "in-house",
+    "signup_url": "https://profitise.com/affiliates/",
+    "commission": "unknown (pay per accepted home-services or solar lead or call; rate set in the insertion order, not a single published rate)",
+    "cookie_days": "unknown",
+    "type": "self_serve",
+    "contact_email": "info@profitise.com",
+    "source": "https://profitise.com/affiliates/",
+    "status": "new"
+  },
+  {
     "name": "Rebolt",
     "network": "PartnerStack",
     "signup_url": "https://market.partnerstack.com/page/rebolt",
@@ -107,6 +173,28 @@
     "type": "self_serve",
     "contact_email": "referrals@servicetitan.com",
     "source": "https://www.servicetitan.com/referrals/partner",
+    "status": "new"
+  },
+  {
+    "name": "Shipshape",
+    "network": "in-house",
+    "signup_url": "https://www.shipshape.ai/referrals",
+    "commission": "$400 when a qualified HVAC, plumbing, electrical, or waterproofing company holds a demo, plus at least $400 more or 5% of first-year revenue (whichever is more, up to $2,500) when they sign. Page states program terms are being finalized.",
+    "cookie_days": "unknown",
+    "type": "self_serve",
+    "contact_email": "",
+    "source": "https://www.shipshape.ai/referrals",
+    "status": "new"
+  },
+  {
+    "name": "Smarfle",
+    "network": "in-house",
+    "signup_url": "https://www.smarfle.com/auth/affiliate",
+    "commission": "15-25% of subscription payments for 12 months (15% default, 20% at 5 paying customers, 25% at 15). Agency partners: 20% for as long as the client pays, 25% at 15 paying clients.",
+    "cookie_days": 90,
+    "type": "self_serve",
+    "contact_email": "",
+    "source": "https://www.smarfle.com/affiliate-program",
     "status": "new"
   },
   {
