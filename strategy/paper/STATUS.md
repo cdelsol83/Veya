@@ -1,40 +1,38 @@
 # Paper trading status
 
 Simulated accounts running the strategy on real daily closes. No real money or orders.
-Updated 2026-10-30.
+Updated 2026-11-02.
 
 | Account | Opened | Value | Return | SPY over same period | Worst drop | Days tracked |
 |---|---|---|---|---|---|---|
-| Stocks + crypto | 2026-10-13 | $97,143 | -2.86% | -2.87% | -2.79% | 14 |
-| All markets | 2026-10-13 | $96,866 | -3.13% | -2.87% | -3.06% | 14 |
+| Stocks + crypto | 2026-10-13 | $96,912 | -3.09% | -3.33% | -3.02% | 15 |
+| All markets | 2026-10-13 | $96,214 | -3.79% | -3.33% | -3.71% | 15 |
 
-## Stocks + crypto: target weights (last rebalance 2026-10)
-
-| Asset | Weight |
-|---|---|
-| SPY | 20.2% |
-| EFA | 17.2% |
-| IWM | 16.5% |
-| SHY | 14.3% |
-| QQQ | 12.1% |
-| EEM | 9.7% |
-| BTC-USD | 5.8% |
-| ETH-USD | 4.2% |
-
-## All markets: target weights (last rebalance 2026-10)
+## Stocks + crypto: target weights (last rebalance 2026-11)
 
 | Asset | Weight |
 |---|---|
-| SPY | 19.1% |
-| EFA | 16.3% |
-| IWM | 15.6% |
-| QQQ | 11.5% |
-| DBC | 9.9% |
-| EEM | 9.2% |
-| BTC-USD | 5.5% |
-| SHY | 5.2% |
-| ETH-USD | 4.0% |
-| SOL-USD | 3.9% |
+| SPY | 25.9% |
+| EFA | 24.0% |
+| IWM | 19.7% |
+| QQQ | 14.5% |
+| BTC-USD | 6.7% |
+| ETH-USD | 4.8% |
+| SHY | 4.3% |
+
+## All markets: target weights (last rebalance 2026-11)
+
+| Asset | Weight |
+|---|---|
+| SPY | 19.5% |
+| EFA | 18.0% |
+| IWM | 14.8% |
+| VNQ | 14.3% |
+| QQQ | 10.9% |
+| DBC | 10.4% |
+| BTC-USD | 5.0% |
+| ETH-USD | 3.6% |
+| SOL-USD | 3.5% |
 
 Full ledgers: `paper/<account>/trades.csv` and `paper/<account>/equity.csv`.
 A paper record needs many months, and ideally a few years including a downturn, before it says much.
