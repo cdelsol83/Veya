@@ -1,12 +1,12 @@
 # Paper trading status
 
 Simulated accounts running the strategy on real daily closes. No real money or orders.
-Updated 2026-11-03.
+Updated 2026-11-04.
 
 | Account | Opened | Value | Return | SPY over same period | Worst drop | Days tracked |
 |---|---|---|---|---|---|---|
-| Stocks + crypto | 2026-10-13 | $97,132 | -2.87% | -3.04% | -3.02% | 16 |
-| All markets | 2026-10-13 | $96,421 | -3.58% | -3.04% | -3.71% | 16 |
+| Stocks + crypto | 2026-10-13 | $99,071 | -0.93% | -1.44% | -3.02% | 17 |
+| All markets | 2026-10-13 | $98,008 | -1.99% | -1.44% | -3.71% | 17 |
 
 ## Stocks + crypto: target weights (last rebalance 2026-11)
 
