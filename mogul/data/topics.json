@@ -63,10 +63,50 @@
   },
   {
     "title": "Independently owned plumbers in Naples, FL (license checked)",
-    "status": "queued"
+    "status": "published"
   },
   {
     "title": "Independently owned electricians in Gainesville, FL with verified Florida licenses",
+    "status": "queued"
+  },
+  {
+    "title": "Independently owned plumbers in Tampa, FL (license checked)",
+    "status": "queued"
+  },
+  {
+    "title": "Independently owned electricians in Orlando, FL with active state licenses",
+    "status": "queued"
+  },
+  {
+    "title": "Independently owned HVAC contractors in Jacksonville, FL (DBPR checked)",
+    "status": "queued"
+  },
+  {
+    "title": "Independently owned roofers in Miami, FL (Florida license checked)",
+    "status": "queued"
+  },
+  {
+    "title": "Independently owned pool & spa contractors in Tampa, FL (license verified)",
+    "status": "queued"
+  },
+  {
+    "title": "Independently owned general contractors in Orlando, FL (DBPR verified)",
+    "status": "queued"
+  },
+  {
+    "title": "Independently owned electrical contractors in Fort Lauderdale, FL (license checked)",
+    "status": "queued"
+  },
+  {
+    "title": "Independently owned roofing contractors in Naples, FL (DBPR verified)",
+    "status": "queued"
+  },
+  {
+    "title": "Independently owned HVAC companies in Gainesville, FL with current licenses",
+    "status": "queued"
+  },
+  {
+    "title": "Independently owned plumbers in West Palm Beach, FL (license checked)",
     "status": "queued"
   }
 ]
