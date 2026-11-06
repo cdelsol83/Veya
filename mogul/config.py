@@ -97,7 +97,7 @@ AFFILIATE_LINKS = {
 }
 
 # --- Model / APIs (secrets come from environment variables, never this file) ---
-XAI_MODEL = os.environ.get("MOGUL_MODEL") or "grok-4.7"
+XAI_MODEL = (os.environ.get("MOGUL_MODEL") or "").strip() or "grok-4.7"  # strip: GitHub variables can end in a line break
 XAI_API_KEY = os.environ.get("XAI_API_KEY", "")
 TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN", "")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "")
