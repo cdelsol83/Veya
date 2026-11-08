@@ -79,7 +79,11 @@
   },
   {
     "title": "Independently owned electricians in Orlando, FL with active state licenses",
-    "status": "queued"
+    "status": "rejected",
+    "reasons": [
+      "only 1 records (< 5)",
+      "body is 249 words (< 350)"
+    ]
   },
   {
     "title": "Independently owned HVAC contractors in Jacksonville, FL (DBPR checked)",
