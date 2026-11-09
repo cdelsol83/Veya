@@ -87,7 +87,11 @@
   },
   {
     "title": "Independently owned HVAC contractors in Jacksonville, FL (DBPR checked)",
-    "status": "queued"
+    "status": "rejected",
+    "reasons": [
+      "only 1 records (< 5)",
+      "body is 267 words (< 350)"
+    ]
   },
   {
     "title": "Independently owned roofers in Miami, FL (Florida license checked)",
