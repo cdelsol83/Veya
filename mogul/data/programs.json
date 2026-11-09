@@ -77,6 +77,17 @@
     "status": "new"
   },
   {
+    "name": "Housecall Pro Affiliate Program",
+    "network": "PartnerStack",
+    "signup_url": "https://dash.partnerstack.com/application?company=housecallpro&group=paidaffiliates",
+    "commission": "up to $250 per customer",
+    "cookie_days": "unknown",
+    "type": "contact",
+    "contact_email": "",
+    "source": "https://www.housecallpro.com/paid-affiliates/",
+    "status": "new"
+  },
+  {
     "name": "Jobber",
     "network": "PartnerStack",
     "signup_url": "https://jobber.partnerstack.com/?group=baseaffiliate",
@@ -143,6 +154,17 @@
     "status": "new"
   },
   {
+    "name": "QuoteIQ Affiliate Program",
+    "network": "Rewardful",
+    "signup_url": "https://quoteiq.getrewardful.com/signup",
+    "commission": "40% recurring lifetime",
+    "cookie_days": "lifetime",
+    "type": "self_serve",
+    "contact_email": "mav@myquoteiq.com",
+    "source": "https://myquoteiq.com/home-service-affiliate-program/",
+    "status": "new"
+  },
+  {
     "name": "Rebolt",
     "network": "PartnerStack",
     "signup_url": "https://market.partnerstack.com/page/rebolt",
@@ -198,6 +220,17 @@
     "status": "new"
   },
   {
+    "name": "Smarfle Affiliate Program",
+    "network": "in-house",
+    "signup_url": "https://www.smarfle.com/auth/affiliate",
+    "commission": "15-25% recurring for 12 months",
+    "cookie_days": "90",
+    "type": "self_serve",
+    "contact_email": "",
+    "source": "https://www.smarfle.com/affiliate-program",
+    "status": "new"
+  },
+  {
     "name": "The Builder Market (US)",
     "network": "Awin",
     "signup_url": "https://ui.awin.com/merchant-profile/114100",
@@ -217,6 +250,17 @@
     "type": "self_serve",
     "contact_email": "",
     "source": "https://www.flexoffers.com/affiliate-programs/thimble-affiliate-program/",
+    "status": "new"
+  },
+  {
+    "name": "TradePass Referral Program",
+    "network": "in-house",
+    "signup_url": "https://tradepassapp.com/partner-signup",
+    "commission": "50% of first payment",
+    "cookie_days": "unknown",
+    "type": "self_serve",
+    "contact_email": "",
+    "source": "https://tradepassapp.com/referral-program",
     "status": "new"
   },
   {
