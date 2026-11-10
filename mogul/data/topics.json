@@ -95,7 +95,11 @@
   },
   {
     "title": "Independently owned roofers in Miami, FL (Florida license checked)",
-    "status": "queued"
+    "status": "rejected",
+    "reasons": [
+      "only 0 records (< 5)",
+      "body is 250 words (< 350)"
+    ]
   },
   {
     "title": "Independently owned pool & spa contractors in Tampa, FL (license verified)",
