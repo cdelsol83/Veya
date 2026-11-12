@@ -71,35 +71,19 @@
   },
   {
     "title": "Independently owned plumbers in Tampa, FL (license checked)",
-    "status": "rejected",
-    "reasons": [
-      "only 0 records (< 5)",
-      "body is 222 words (< 350)"
-    ]
+    "status": "queued"
   },
   {
     "title": "Independently owned electricians in Orlando, FL with active state licenses",
-    "status": "rejected",
-    "reasons": [
-      "only 1 records (< 5)",
-      "body is 249 words (< 350)"
-    ]
+    "status": "queued"
   },
   {
     "title": "Independently owned HVAC contractors in Jacksonville, FL (DBPR checked)",
-    "status": "rejected",
-    "reasons": [
-      "only 1 records (< 5)",
-      "body is 267 words (< 350)"
-    ]
+    "status": "queued"
   },
   {
     "title": "Independently owned roofers in Miami, FL (Florida license checked)",
-    "status": "rejected",
-    "reasons": [
-      "only 0 records (< 5)",
-      "body is 250 words (< 350)"
-    ]
+    "status": "queued"
   },
   {
     "title": "Independently owned pool & spa contractors in Tampa, FL (license verified)",
