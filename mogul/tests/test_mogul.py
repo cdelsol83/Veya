@@ -296,3 +296,14 @@ def test_info_pages_and_resource_slots(sandbox, monkeypatch):
     tools = (sandbox / "site" / "for-contractors" / "index.html").read_text()
     assert 'href="../out/j/" rel="sponsored nofollow"' in tools and "commission" in tools
     assert "https://j.example/?ref=me" in (sandbox / "site" / "out" / "j" / "index.html").read_text()
+
+
+def test_model_at_capacity_is_retried(monkeypatch):
+    monkeypatch.setattr(config, "DEMO", False)
+    monkeypatch.setattr(config, "XAI_API_KEY", "k")
+    monkeypatch.setattr(llm.time, "sleep", lambda s: None)
+    busy = {"type": "error", "message": "The model is currently at capacity due to high demand. Please try again in a few minutes"}
+    replies = [sse(busy), sse({"type": "response.output_text.delta", "delta": "ok"})]
+    monkeypatch.setattr(llm.urllib.request, "urlopen", lambda req, timeout: FakeStream(replies.pop(0)))
+    assert llm.ask("hi") == ("ok", [])
+    assert replies == []
