@@ -307,3 +307,11 @@ def test_model_at_capacity_is_retried(monkeypatch):
     monkeypatch.setattr(llm.urllib.request, "urlopen", lambda req, timeout: FakeStream(replies.pop(0)))
     assert llm.ask("hi") == ("ok", [])
     assert replies == []
+
+
+def test_failed_run_sends_a_telegram_alert(monkeypatch):
+    import mogul
+    msg = mogul.failure_alert("build", llm.LLMError("xAI API 403: ... used all available credits or reached its monthly spending limit"))
+    assert msg.startswith("🚨 Mogul build failed:") and "console.x.ai" in msg
+    assert "overloaded" in mogul.failure_alert("build", llm.LLMError("model is currently at capacity"))
+    assert "boom" in mogul.failure_alert("poll", ValueError("boom"))
