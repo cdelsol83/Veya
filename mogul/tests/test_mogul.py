@@ -315,3 +315,17 @@ def test_failed_run_sends_a_telegram_alert(monkeypatch):
     assert msg.startswith("🚨 Mogul build failed:") and "console.x.ai" in msg
     assert "overloaded" in mogul.failure_alert("build", llm.LLMError("model is currently at capacity"))
     assert "boom" in mogul.failure_alert("poll", ValueError("boom"))
+
+
+def test_home_page_has_city_and_trade_filters(sandbox):
+    page = demo_page("Independently owned plumbers in Tampa, FL (license checked)")
+    page["title"] = "Independently owned plumbers in Tampa, FL (license checked)"
+    page["slug"] = "plumbers-tampa"
+    store.save("pages/plumbers-tampa.json", page)
+    render.build()
+    home = (sandbox / "site" / "index.html").read_text()
+    assert '<select id=city>' in home and '<option value="tampa">Tampa (' in home
+    assert '<option value="plumbers">Plumbers (' in home
+    assert 'data-cities="tampa" data-trades="plumbers"' in home and "[hidden]{display:none!important}" in home
+    bid = render.biz_id(page["records"][0]["name"])
+    assert f'href="go/{bid}/"' in home  # home cards link from the site root
