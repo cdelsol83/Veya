@@ -329,3 +329,35 @@ def test_home_page_has_city_and_trade_filters(sandbox):
     assert 'data-cities="tampa" data-trades="plumbers"' in home and "[hidden]{display:none!important}" in home
     bid = render.biz_id(page["records"][0]["name"])
     assert f'href="go/{bid}/"' in home  # home cards link from the site root
+
+
+def test_reasoning_is_low_and_dropped_if_xai_rejects_it(monkeypatch):
+    import io
+    import urllib.error
+    import llm
+    monkeypatch.setattr(config, "DEMO", False)
+    monkeypatch.setattr(config, "XAI_API_KEY", "k")
+    monkeypatch.setattr(config, "REASONING_EFFORT", "low")
+    sent = []
+
+    class Stream:
+        def __enter__(self):
+            return iter([b"data: " + json.dumps({"type": "response.output_text.delta", "delta": "ok"}).encode() + b"\n"])
+
+        def __exit__(self, *a):
+            return False
+
+    def urlopen(req, timeout):
+        body = json.loads(req.data)
+        sent.append(body.get("reasoning"))
+        if len(sent) == 1:
+            raise urllib.error.HTTPError(req.full_url, 400, "bad", {}, io.BytesIO(b"unknown field: reasoning"))
+        return Stream()
+    monkeypatch.setattr(llm.urllib.request, "urlopen", urlopen)
+    assert llm.ask("hi") == ("ok", [])
+    assert sent == [{"effort": "low"}, None]  # asked for low, then retried without it
+
+
+def test_research_asks_for_at_most_max_records():
+    import builder
+    assert "{max_n}" in builder.RESEARCH_PROMPT and config.MAX_RECORDS == 7

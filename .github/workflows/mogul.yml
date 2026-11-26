@@ -4,7 +4,7 @@ name: Mogul
 # and variables > Actions > Variables). Manual runs (Run workflow) work without it.
 on:
   schedule:
-    - cron: "0 7 * * *"     # nightly build: ~2-3am US Eastern
+    - cron: "0 7 */3 * *"   # build every 3 days (1st, 4th, 7th...): ~2-3am US Eastern
     - cron: "17 * * * *"    # hourly: read Telegram taps, send approved emails
     - cron: "5 13 * * *"    # daily money report
   workflow_dispatch:
@@ -54,7 +54,7 @@ jobs:
       - id: pick
         run: |
           case "${{ github.event.schedule }}" in
-            "0 7 * * *")  t=build ;;
+            "0 7 */3 * *") t=build ;;
             "17 * * * *") t=poll ;;
             "5 13 * * *") t=report ;;
             *)            t="${{ inputs.task }}" ;;
