@@ -20,7 +20,7 @@ Return a JSON array of strings."""
 
 RESEARCH_PROMPT = """Niche: {niche}. Page: "{title}".
 {rules}
-Use web search to collect {min_n}-12 real entries for this page. For each entry return:
+Use web search to collect {min_n}-{max_n} real entries for this page. For each entry return:
   "name", "location" (if relevant), "facts": an object of short factual fields that matter
   to someone choosing (prices, fees, rules, limits, hours, features), "vendor" (the brand/
   booking platform if any, else ""), "website": the business's own website (not a directory
@@ -122,7 +122,7 @@ def refill_topics(topics, n=10):
 
 def make_page(title, published=None):
     research, citations = llm.ask_json(RESEARCH_PROMPT.format(
-        niche=config.NICHE, title=title, min_n=config.MIN_RECORDS,
+        niche=config.NICHE, title=title, min_n=config.MIN_RECORDS, max_n=config.MAX_RECORDS,
         rules=config.NICHE_RULES.format(area=config.AREA)))
     found = research.get("records", [])
     records = [r for r in found if quality.license_verified(r)]  # unconfirmed licenses never ship

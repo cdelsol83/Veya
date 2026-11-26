@@ -85,6 +85,9 @@ SCOUT_WEIGHTS = {  # 0-10 scores from the model, combined into one number
 # --- Builder quality gate: a page that fails ANY of these is not published ---
 PAGES_PER_NIGHT = 1
 MIN_RECORDS = 5             # real entries (campgrounds, tools, ...) on the page
+# Cost controls (each build is one web-search research call plus one writing call)
+MAX_RECORDS = 7             # stop researching after this many entries; pages still need MIN_RECORDS
+REASONING_EFFORT = (os.environ.get("MOGUL_REASONING") or "").strip() or "low"  # low/medium/high; "off" = model default
 MIN_SOURCED_FRACTION = 1.0  # every record must cite a source URL
 MIN_WORDS = 350
 MAX_SIMILARITY = 0.55       # Jaccard similarity vs any existing page (near-duplicate guard)
